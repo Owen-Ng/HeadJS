@@ -13,6 +13,7 @@ function head(startcoord,radius, backimg, draggable, holdclick, doubleclick){
 	_self.clickonoff = false;
 	_self.mousedown = false;
 	_self.linklist = [];
+	_self.currentpage = null;
 
 	const body = document.querySelector('body');
 
@@ -32,11 +33,24 @@ function head(startcoord,radius, backimg, draggable, holdclick, doubleclick){
 	
 	_self.addoubleclick  = function(link){
 		head.addEventListener('dblclick', function(e){
+			const select = window.location.href.replace(( window.location.origin + '/') , '');
+			log(select);
+			_self.currentpage = link.indexOf(select);
+			// log(indexselect)
+			log(_self.currentpage)
+			if (_self.currentpage >= link.length - 1){
+					_self.currentpage = 0;
+
+				}else{
+					_self.currentpage ++;
+			}
+			 
+
 			if(_self.clickonoff){
 				e.preventDefault();
 			}else{
 			e.preventDefault();
-			window.location.href = window.location.protocol + "/" + link;
+			window.location.href = window.location.protocol + "/" + link[_self.currentpage];
 			}
 		})
 
@@ -76,6 +90,7 @@ function head(startcoord,radius, backimg, draggable, holdclick, doubleclick){
 		 ulist.style = `display:none`;
 		head.addEventListener('click', function(e){
 			e.preventDefault();
+			e.stopPropagation();
 			_self.clickonoff = !_self.clickonoff;
 			setTimeout(function(){
 			if (_self.clickonoff){
@@ -130,16 +145,21 @@ function head(startcoord,radius, backimg, draggable, holdclick, doubleclick){
 				const button = document.createElement('button');
 				button.innerHTML = selectedlink[i];
 				button.onclick = "href = " + selectedlink[i];
+				log(i)
 				if(i === 0){
-					button.style = `position:absolute;left:${leftcenter} ;top: ${topcenter} - _self.radius; `
+					const top = topcenter-_self.radius
+					button.style = `left:${leftcenter}px;top: ${top}px;position:absolute; `
 				}
 				else if (i ===1){
-					button.style = `position:absolute;left:${leftcenter}  ;top: ${topcenter} + _self.radius; `
+					const top = topcenter+_self.radius
+					button.style = `position:absolute;left:${leftcenter}px ;top: ${top}px; `
 				}
 				else if (i === 2 ){
-					button.style = `position:absolute;left:${leftcenter} - _self.radius; ;top: ${topcenter}  `
+					const left = leftcenter - _self.radius;
+					button.style = `position:absolute;left:${left}px; ;top: ${topcenter}px `
 				}else if(i ===3){
-					button.style = `position:absolute;left:${leftcenter}  + _self.radius;;top: ${topcenter}  `
+					const left = leftcenter + _self.radius;
+					button.style = `position:absolute;left:${{left}}px;top: ${topcenter}px  `
 				}
 				divselector.append(button);
 				divselector.style = 'display:none;'
@@ -148,6 +168,7 @@ function head(startcoord,radius, backimg, draggable, holdclick, doubleclick){
 			body.append(divselector);
 
 		head.addEventListener('mousedown', function(e){
+		
 			_self.clickonoff = true;
 			setTimeout(function(){
 				if(_self.clickonoff){
@@ -157,7 +178,8 @@ function head(startcoord,radius, backimg, draggable, holdclick, doubleclick){
 			},1000)
 
 		})
-		head.addEventListener('mouseup', function(){
+		head.addEventListener('mouseup', function(e){
+			
 			_self.clickonoff= false;
 			divselector.style.display = 'none'
 		})
