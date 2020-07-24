@@ -14,6 +14,7 @@ function head(startcoord,radius, backimg, draggable, holdclick, doubleclick){
 	_self.mousedown = false;
 	_self.linklist = [];
 	_self.currentpage = null;
+	_self.dragging = false;
 
 	const body = document.querySelector('body');
 
@@ -22,7 +23,7 @@ function head(startcoord,radius, backimg, draggable, holdclick, doubleclick){
 	const style = document.createElement('style');
 
 	const dochead = document.querySelector('head');
-	style.innerHTML = `	#head {display:block;position: absolute;z-index:1;
+	style.innerHTML = `	#head {display:block;position: fixed;z-index:1;
 	 border-radius: 50%;padding:0px; margin:0px; background-color: ${_self.backimg};} `
 	dochead.append(style);
 
@@ -31,6 +32,8 @@ function head(startcoord,radius, backimg, draggable, holdclick, doubleclick){
 	head.style = `top: ${_self.coord[0]}px;left: ${_self.coord[1]}px;width: ${_self.radius}px; height: ${_self.radius}px;`
 	// `top: 0;left: 0;width: 60px; height: 60px;`
 	
+
+
 	_self.addoubleclick  = function(link){
 		head.addEventListener('dblclick', function(e){
 			const select = window.location.href.replace(( window.location.origin + '/') , '');
@@ -55,6 +58,8 @@ function head(startcoord,radius, backimg, draggable, holdclick, doubleclick){
 		})
 
 	}	
+
+
 	_self.addclicklist= function(linkText, W, L){//if the element of list contain "link" this element is a link by default it is a text
 		const ulist = document.createElement('ul');
 
@@ -93,7 +98,8 @@ function head(startcoord,radius, backimg, draggable, holdclick, doubleclick){
 			e.stopPropagation();
 			_self.clickonoff = !_self.clickonoff;
 			setTimeout(function(){
-			if (_self.clickonoff){
+			if (_self.clickonoff && !_self.mousedown){
+				_self.mousedown= false;
 				const left = parseFloat(head.style.left, 10);
 				const top = parseFloat(head.style.top, 10);
 				const listcorners = [[left  - W ,top  -_self.radius/2- L*linkText.length],[left - W, top + _self.radius],
@@ -119,7 +125,8 @@ function head(startcoord,radius, backimg, draggable, holdclick, doubleclick){
 					defaultcorner = listcorners[2]
 				}
 
-				ulist.style = `display:block; list-style: none;position: absolute;padding:0; left: ${defaultcorner[0]}px;top: ${defaultcorner[1]}px ;`
+				ulist.style = `display:block; list-style: none;position: absolute;padding:0;
+				 left: ${defaultcorner[0]}px;top: ${defaultcorner[1]}px ;`
 			}else{
 				ulist.style = `display: none`;
 			
@@ -159,7 +166,7 @@ function head(startcoord,radius, backimg, draggable, holdclick, doubleclick){
 					button.style = `position:absolute;left:${left}px; ;top: ${topcenter}px `
 				}else if(i ===3){
 					const left = leftcenter + _self.radius;
-					button.style = `position:absolute;left:${{left}}px;top: ${topcenter}px  `
+					button.style = `position:absolute;left:${left}px;top: ${topcenter}px  `
 				}
 				divselector.append(button);
 				divselector.style = 'display:none;'
@@ -169,9 +176,9 @@ function head(startcoord,radius, backimg, draggable, holdclick, doubleclick){
 
 		head.addEventListener('mousedown', function(e){
 		
-			_self.clickonoff = true;
+			_self.mousedown = true;
 			setTimeout(function(){
-				if(_self.clickonoff){
+				if(_self.mousedown){
 					divselector.style.display = 'block';
 
 				}
@@ -179,9 +186,11 @@ function head(startcoord,radius, backimg, draggable, holdclick, doubleclick){
 
 		})
 		head.addEventListener('mouseup', function(e){
+			_self.mousedown= false;
+			setTimeout(function(){
 			
-			_self.clickonoff= false;
-			divselector.style.display = 'none'
+			divselector.style.display = 'none'}, 1000)
+			
 		})
 		
 	}
