@@ -20,8 +20,9 @@ function head(startcoord,radius, backimg, draggable){
 	const style = document.createElement('style');
 
 	const dochead = document.querySelector('head');
+
 	style.innerHTML = `	#head {display:block;position: fixed;z-index:1;
-	 border-radius: 50%;padding:0px; margin:0px; background-color: ${_self.backimg};} `
+	 border-radius: 50%;padding:0px; margin:0px; background-color: ${_self.backimg};background-image: url(${_self.backimg})} `
 	dochead.append(style);
 
 	head.id = 'head';

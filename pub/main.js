@@ -1,6 +1,6 @@
 "use strict"
 
-const newhead = head([100,100], 100, "orange", true);
-newhead.addclicklist(['Hello', 'how are you', 'OKKKKKK', 'link page2.html page3', 'link page1.html page2','link index.html page1'], 100,20);
-newhead.addoubleclick(['index.html', 'page1.html', 'page2.html']);
-newhead.addholdclick({'index.html': ['top', 'down'], 'page1.html':['top', 'down'], 'page2.html':['top', 'down']}) 
+const newhead = head([200,500], 100, "img.jpg", true);
+newhead.addclicklist(['Hello', 'how are you', 'OKKKKKK', 'link Screen3.html Screen3', 'link Screen2.html Screen2','link Screen1.html Screen1'], 100,20);
+newhead.addoubleclick(['Screen1.html', 'Screen2.html', 'Screen3.html']);
+newhead.addholdclick({'Screen1.html': ['top', 'down'], 'Screen2.html':['top', 'down'], 'Screen3.html':['top', 'down']}) 
