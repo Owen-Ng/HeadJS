@@ -1,10 +1,10 @@
 'use strict'
 const log = console.log
 
-function head(startcoord,radius, backimg, draggable){
+function head(startcoord,diameter, backimg, draggable){
 	const _self = {};
 	_self.coord = startcoord;
-	_self.radius = radius;
+	_self.diameter = diameter;
 	_self.backimg = backimg;
 	_self.draggable = draggable;
 	_self.clickonoff = false;
@@ -22,12 +22,13 @@ function head(startcoord,radius, backimg, draggable){
 	const dochead = document.querySelector('head');
 
 	style.innerHTML = `	#head {display:block;position: fixed;z-index:1;
-	 border-radius: 50%;padding:0px; margin:0px; background-color: ${_self.backimg};background-image: url(${_self.backimg})} `
+	 border-radius:
+ 50%;padding:0px; margin:0px; background-color: ${_self.backimg};background-image: url(${_self.backimg})} `
 	dochead.append(style);
 
 	head.id = 'head';
 	log(_self.coord)
-	head.style = `top: ${_self.coord[0]}px;left: ${_self.coord[1]}px;width: ${_self.radius}px; height: ${_self.radius}px;`
+	head.style = `top: ${_self.coord[0]}px;left: ${_self.coord[1]}px;width: ${_self.diameter}px; height: ${_self.diameter}px;`
 	// `top: 0;left: 0;width: 60px; height: 60px;`
 	
 
@@ -103,8 +104,8 @@ function head(startcoord,radius, backimg, draggable){
 				
 				const left = parseFloat(head.style.left, 10);
 				const top = parseFloat(head.style.top, 10);
-				const listcorners = [[left  - W ,top  -_self.radius/2- L*linkText.length],[left - W, top + _self.radius],
-				[left + _self.radius , top - _self.radius/2 - L*linkText.length],[left + _self.radius, top+_self.radius - L]]
+				const listcorners = [[left  - W ,top  -_self.diameter/2- L*linkText.length],[left - W, top + _self.diameter],
+				[left + _self.diameter , top - _self.diameter/2 - L*linkText.length],[left + _self.diameter, top+_self.diameter - L]]
 				//[top left], [down left],[]
 				let defaultcorner = listcorners[3];
 				if ((listcorners[3][0] < window.innerWidth - W) && (listcorners[3][1] < window.innerHeight - L*linkText.length)){
@@ -142,7 +143,7 @@ function head(startcoord,radius, backimg, draggable){
 	}//end of selfclick
 
 
-	_self.addholdclick = function(listarray){
+	_self.addtouchhold = function(listarray){
 		const leftcenter = parseFloat(head.style.left, 10) + _self.radius/2;
 			const topcenter = parseFloat(head.style.top, 10) + _self.radius/2;
 			const selected = window.location.href.replace(( window.location.origin + '/') , '');
@@ -160,21 +161,21 @@ function head(startcoord,radius, backimg, draggable){
 				// button.onclick = "href =  " + `#${selectedlink[i]}`;
 				log(i)
 				if(i === 0){
-					const top = topcenter-_self.radius
+					const top = topcenter-_self.diameter
 					button.id = 'b0';
 					button.style = `left:${leftcenter}px;top: ${top}px;position:fixed; `
 				}
 				else if (i ===1){
-					const top = topcenter+_self.radius
+					const top = topcenter+_self.diameter
 					button.id = 'b1'
 					button.style = `position:fixed;left:${leftcenter}px ;top: ${top}px; `
 				}
 				else if (i === 2 ){
-					const left = leftcenter - _self.radius;
+					const left = leftcenter - _self.diameter;
 					button.id = 'b2'
 					button.style = `position:absolute;left:${left}px; ;top: ${topcenter}px `
 				}else if(i ===3){
-					const left = leftcenter + _self.radius;
+					const left = leftcenter + _self.diameter;
 					button.id = 'b3'
 					button.style = `position:absolute;left:${left}px;top: ${topcenter}px  `
 				}
@@ -185,24 +186,24 @@ function head(startcoord,radius, backimg, draggable){
 			body.append(_self.holdnavigation);
 
 		head.addEventListener('mouseenter', function(e){
-			const leftcenter = parseFloat(head.style.left, 10) + _self.radius/2;
-			const topcenter = parseFloat(head.style.top, 10) + _self.radius/2; 
+			const leftcenter = parseFloat(head.style.left, 10) + _self.diameter/2;
+			const topcenter = parseFloat(head.style.top, 10) + _self.diameter/2; 
 			for (let i = 0; i< selectedlink.length ; i++ ){
 				const ids = document.getElementById('b' + i);
 				if ( i === 0){
-					const top = topcenter-_self.radius
+					const top = topcenter-_self.diameter
 					ids.style.left = leftcenter + 'px';
 					ids.style.top = top + 'px';
 				}else if(i === 1){
-					const top = topcenter+_self.radius
+					const top = topcenter+_self.diameter
 					ids.style.left = leftcenter + 'px';
 					ids.style.top = top + 'px';
 				}else if(i === 2){
-					const left = leftcenter - _self.radius;
+					const left = leftcenter - _self.diameter;
 					ids.style.left = left + 'px';
 					ids.style.top = topcenter + 'px'; 
 				}else if (i === 3){
-					const left = leftcenter + _self.radius;
+					const left = leftcenter + _self.diameter;
 					ids.style.left = left + 'px';
 					ids.style.top = topcenter + 'px';
 				}
