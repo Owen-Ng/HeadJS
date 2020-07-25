@@ -21,9 +21,14 @@ function head(startcoord,diameter, backimg, draggable){
 
 	const dochead = document.querySelector('head');
 
-	style.innerHTML = `	#head {display:block;position: fixed;z-index:1;
-	 border-radius:
- 50%;padding:0px; margin:0px; background-color: ${_self.backimg};background-image: url(${_self.backimg})} `
+
+ 	if (_self.backimg.charAt(0) === "/"){
+ 			style.innerHTML = `	#head {display:block;position: fixed;z-index:1;	 border-radius: 50%;
+ 				padding:0px; margin:0px;background-image: url(${_self.backimg}) `
+ 	}else{
+ 			style.innerHTML = `	#head {display:block;position: fixed;z-index:1;	 border-radius: 50%;
+ 				padding:0px; margin:0px; background-color: ${_self.backimg}; `
+ 	}
 	dochead.append(style);
 
 	head.id = 'head';
