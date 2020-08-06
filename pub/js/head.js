@@ -64,7 +64,7 @@ function head(startcoord,diameter, backimg, draggable){
 	}	
 
 
-	_self.addclicklist= function(linkText, W, L, backgroundcolor){//if the element of list contain "link" this element is a link by default it is a text
+	_self.addclicklist= function(linkText, W, L, backgroundcolor, onmousecolor){//if the element of list contain "link" this element is a link by default it is a text
 		const ulist = document.createElement('ul');
 
 		for (let i = 0; i < linkText.length ; i++){
@@ -73,12 +73,22 @@ function head(startcoord,diameter, backimg, draggable){
 				const list = document.createElement('li');
 				const link = document.createElement('a');
 				link.href = element.split(' ')[1];
+				link.style = `text-decoration: none; color:black`
 				// _self.linklist.push(link.href);
 				link.innerHTML = element.split(' ').slice(2).join(' ');
 				list.draggable = 'false';
 				list.style = `width: ${W}px; height: ${L}px; border: 1px solid black;
-				 margin: 2px; text-align: center; border-radius:20px; background-color: ${backgroundcolor} `
+				 margin: 2px; text-align: center; border-radius:20px;transition: all 1s ease-in-out;background-color: ${backgroundcolor} `
 				list.append(link);
+				if (onmousecolor){
+					list.addEventListener('mouseenter',function(e){
+					list.style.backgroundColor = onmousecolor;
+				})
+				list.addEventListener('mouseleave', function(e){
+					list.style.backgroundColor = backgroundcolor;
+				})
+				}
+				
 				ulist.append(list);
 				log('daww')
 
@@ -149,7 +159,7 @@ function head(startcoord,diameter, backimg, draggable){
 	}//end of selfclick
 
 
-	_self.addtouchhold = function(listarray, backcolor){
+	_self.addtouchhold = function(listarray, backcolor, animatecolor){
 		const leftcenter = parseFloat(head.style.left, 10) + _self.diameter/2 -20;
 			const topcenter = parseFloat(head.style.top, 10) + _self.diameter/2 -10;
 			const selected = window.location.href.replace(( window.location.origin + '/') , '');
@@ -163,7 +173,7 @@ function head(startcoord,diameter, backimg, draggable){
 					const abutton = document.createElement('a');
 					abutton.href = `#${selectedlink[i]}`;
 					abutton.innerHTML = selectedlink[i];
-
+					abutton.style = `text-decoration: none; color: black; `
 					// button.innerHTML = selectedlink[i];
 					button.append(abutton);
 					// log("href =  " + `#${selectedlink[i]}`)
@@ -220,6 +230,12 @@ function head(startcoord,diameter, backimg, draggable){
 						}
 						
 					}
+						if (_self.clickonoff){
+						_self.mousedown = false;
+					}else{
+						_self.mousedown = true;
+
+					}
 					
 					setTimeout(function(){
 						if (_self.clickonoff){
@@ -236,9 +252,9 @@ function head(startcoord,diameter, backimg, draggable){
 
 				})
 				head.addEventListener('mouseleave', function(e){
-					_self.mousedown= false;
-					setTimeout(function(){
 					
+					setTimeout(function(){
+					_self.mousedown= false;
 					_self.holdnavigation.style.display = 'none'}, 1000)
 					
 				})
@@ -264,10 +280,10 @@ function head(startcoord,diameter, backimg, draggable){
 
 
 		    event.dataTransfer.setData("text/plain",
-		    (parseInt(style.getPropertyValue("left"),10) - event.clientX) + ',' + 
-		    (parseInt(style.getPropertyValue("top"),10) - event.clientY));
+		    ( parseFloat(style.getPropertyValue("left"),10) - event.clientX) + ',' + 
+		    (parseFloat(style.getPropertyValue("top"),10) - event.clientY));
 			}
-		},true);
+		},false);
 
 
 
@@ -280,7 +296,7 @@ function head(startcoord,diameter, backimg, draggable){
 
 			
    
-		}, true);
+		}, false);
 
 
 		document.documentElement.addEventListener('drop', function(event){
@@ -290,8 +306,8 @@ function head(startcoord,diameter, backimg, draggable){
 			// head.style.height = ( parseFloat(head.style.height,10) - 10) + 'px' ; 
 			const offset = event.dataTransfer.getData("text/plain").split(',');
 		   
-		    head.style.left = (event.clientX + parseInt(offset[0],10)) + 'px';
-		    head.style.top = (event.clientY + parseInt(offset[1],10)) + 'px';
+		    head.style.left = (event.clientX + parseFloat(offset[0],10)) + 'px';
+		    head.style.top = (event.clientY + parseFloat(offset[1],10)) + 'px';
 	
     		
 		}, false);
