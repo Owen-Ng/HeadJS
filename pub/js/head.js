@@ -220,13 +220,14 @@ function head(startcoord,diameter, backimg, draggable){
 						}
 						
 					}
-					if (_self.clickonoff){
+					
+					setTimeout(function(){
+						if (_self.clickonoff){
 						_self.mousedown = false;
 					}else{
 						_self.mousedown = true;
 
 					}
-					setTimeout(function(){
 					if(_self.mousedown){
 							_self.holdnavigation.style.display = 'block';
 
