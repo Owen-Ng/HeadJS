@@ -159,7 +159,7 @@ function head(startcoord,diameter, backimg, draggable){
 	}//end of selfclick
 
 
-	_self.addtouchhold = function(listarray, backcolor, animatecolor){
+	_self.addtouchhold = function(listarray, backcolor, onmousecolor){
 		const leftcenter = parseFloat(head.style.left, 10) + _self.diameter/2 -20;
 			const topcenter = parseFloat(head.style.top, 10) + _self.diameter/2 -10;
 			const selected = window.location.href.replace(( window.location.origin + '/') , '');
@@ -176,29 +176,39 @@ function head(startcoord,diameter, backimg, draggable){
 					abutton.style = `text-decoration: none; color: black; `
 					// button.innerHTML = selectedlink[i];
 					button.append(abutton);
+					if(onmousecolor){
+						button.addEventListener('mouseenter',function(e){
+							button.style.backgroundColor = onmousecolor;
+						})
+						button.addEventListener('mouseleave', function(e){
+							button.style.backgroundColor = backcolor;
+						})
+					}
 					// log("href =  " + `#${selectedlink[i]}`)
 					// button.onclick = "href =  " + `#${selectedlink[i]}`;
-					 button.style =`border-radius:20px;`;
 					log(i)
 					if(i === 0){
 						const top = topcenter-_self.diameter
 						button.id = 'b0';
 						button.style = `left:${leftcenter}px;top: ${top}px;position:fixed; 
-						border-radius:20px;background-color:${backcolor}`
+						border-radius:20px; background-color: ${backcolor};transition: all 0.5s ease-in-out;`
 					}
 					else if (i ===1){
 						const top = topcenter+_self.diameter
 						button.id = 'b1'
-						button.style = `position:fixed;left:${leftcenter}px ;top: ${top}px;border-radius:20px;background-color:${backcolor}`
+						button.style = `position:fixed;left:${leftcenter}px ;top: ${top}px;border-radius:20px;
+						background-color: ${backcolor};transition: all 0.5s ease-in-out;`
 					}
 					else if (i === 2 ){
 						const left = leftcenter - _self.diameter;
 						button.id = 'b2'
-						button.style = `position:fixed;left:${left}px; ;top: ${topcenter}px ;border-radius:20px;background-color:${backcolor}`
+						button.style = `position:fixed;left:${left}px; ;top: ${topcenter}px ;border-radius:20px;
+						background-color: ${backcolor};transition: all 0.5s ease-in-out;`
 					}else if(i ===3){
 						const left = leftcenter + _self.diameter;
 						button.id = 'b3'
-						button.style = `position:fixed;left:${left}px;top: ${topcenter}px;border-radius:20px; background-color:${backcolor} `
+						button.style = `position:fixed;left:${left}px;top: ${topcenter}px;border-radius:20px;
+						background-color: ${backcolor}; transition: all 0.5s ease-in-out; `
 					}
 					_self.holdnavigation.append(button);
 					_self.holdnavigation.style = 'display:none;'
