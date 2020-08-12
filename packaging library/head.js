@@ -1,20 +1,17 @@
-"use strict"
-const log = console.log;
+'use strict'
+const log = console.log
 
-(function(global){
-
-	function Head(startcoord,diameter, backimg, draggable){
-
-	this._self = {};
-	this._self.coord = startcoord;
-	this._self.diameter = diameter;
-	this._self.backimg = backimg;
-	this._self.draggable = draggable;
-	this._self.clickonoff = false;
-	this._self.mousedown = false;
-	this._self.currentpage = null;
-	this._self.holdnavigation = null;
-	this._self.dragging = false;
+function head(startcoord,diameter, backimg, draggable){
+	const _self = {};
+	_self.coord = startcoord;
+	_self.diameter = diameter;
+	_self.backimg = backimg;
+	_self.draggable = draggable;
+	_self.clickonoff = false;
+	_self.mousedown = false;
+	_self.currentpage = null;
+	_self.holdnavigation = null;
+	_self.dragging = false;
 
 	const body = document.querySelector('body');
 
@@ -25,113 +22,50 @@ const log = console.log;
 	const dochead = document.querySelector('head');
 
 
- 	if (this._self.backimg.charAt(0) === "/"){
+ 	if (_self.backimg.charAt(0) === "/"){
  			style.innerHTML = `	#head {display:block;position: fixed;z-index:1;	 border-radius: 50%;
- 				padding:0px; margin:0px;background-image: url(${this._self.backimg}) `
+ 				padding:0px; margin:0px;background-image: url(${_self.backimg}) `
  	}else{
  			style.innerHTML = `	#head {display:block;position: fixed;z-index:1;	 border-radius: 50%;
- 				padding:0px; margin:0px; background-color: ${this._self.backimg}; `
+ 				padding:0px; margin:0px; background-color: ${_self.backimg}; `
  	}
 	dochead.append(style);
 
 	head.id = 'head';
-	log(this._self.diameter);
-	head.style = `top: ${this._self.coord[0]}px;left: ${this._self.coord[1]}px;width: ${this._self.diameter}px; height: ${this._self.diameter}px;`
+	log(_self.coord)
+	head.style = `top: ${_self.coord[0]}px;left: ${_self.coord[1]}px;width: ${_self.diameter}px; height: ${_self.diameter}px;`
 	// `top: 0;left: 0;width: 60px; height: 60px;`
 	
-	if (this._self.draggable ){
-
-		head.draggable = true;
-		
-		head.addEventListener('dragstart', function( event){
-			log(this._self)
-			if(this._self.clickonoff){
-				event.preventDefault();
-			}else{
-			const style = window.getComputedStyle(event.target, null);
-			if (this._self.holdnavigation !== null){
-				this._self.holdnavigation.style.display = 'none';
-			}
-			
-			// head.style.width = (10 + parseFloat(style.getPropertyValue("width"),10)) + 'px' ;
-			// head.style.height = (10 + parseFloat(style.getPropertyValue("height"),10)) + 'px' ; 
 
 
-		    event.dataTransfer.setData("text/plain",
-		    ( parseFloat(style.getPropertyValue("left"),10) - event.clientX) + ',' + 
-		    (parseFloat(style.getPropertyValue("top"),10) - event.clientY));
-			}
-		}.bind(this),false);
-
-
-
-
-		document.documentElement.addEventListener('dragover', function(event){
-			event.preventDefault(); 
-			head.style.display = 'none';
-			// ulist.style = `left: ${head.style.left}px;right: ${head.style.right}px ;`
-			log(head.style.left + head.style.top);
-
-			
-   
-		}, false);
-
-
-		document.documentElement.addEventListener('drop', function(event){
-			event.preventDefault();
-			head.style.display = 'block';
-			// head.style.width = ( parseFloat(head.style.width,10) - 10 ) + 'px' ;
-			// head.style.height = ( parseFloat(head.style.height,10) - 10) + 'px' ; 
-			const offset = event.dataTransfer.getData("text/plain").split(',');
-		   
-		    head.style.left = (event.clientX + parseFloat(offset[0],10)) + 'px';
-		    head.style.top = (event.clientY + parseFloat(offset[1],10)) + 'px';
-	
-    		
-		}, false);
-		
-	}//For draggable
-	
-
-
-	
-	body.append(head);
-	this._self.head = head;
-	this._self.body = body;
-	
-	// return this._self;
-
-
-
-	}
-	Head.prototype ={
-		addoubleclick: function(link){
-			this._self.head.addEventListener('dblclick', function(e){
+	_self.addoubleclick  = function(link){
+		head.addEventListener('dblclick', function(e){
 			const select = window.location.href.replace(( window.location.origin + '/') , '');
 			log(select);
-			this._self.currentpage = link.indexOf(select);
+			_self.currentpage = link.indexOf(select);
 			// log(indexselect)
-			log(this._self.currentpage);
-				if (this._self.currentpage >= link.length - 1){
-						this._self.currentpage = 0;
+			log(_self.currentpage)
+			if (_self.currentpage >= link.length - 1){
+					_self.currentpage = 0;
 
-					}else{
-						this._self.currentpage ++;
-				}
-				 
-
-				if(this._self.clickonoff){
-					e.preventDefault();
 				}else{
-					e.preventDefault();
-					window.location.href = window.location.protocol + "/" + link[this._self.currentpage];
-				}
-			}.bind(this));
+					_self.currentpage ++;
+			}
+			 
 
-		
-		},
-		addclicklist: function(linkText, W, L, backgroundcolor, onmousecolor){
-			const ulist = document.createElement('ul');
+			if(_self.clickonoff){
+				e.preventDefault();
+			}else{
+			e.preventDefault();
+			window.location.href = window.location.protocol + "/" + link[_self.currentpage];
+			}
+		})
+
+	}	
+
+
+	_self.addclicklist= function(linkText, W, L, backgroundcolor, onmousecolor){//if the element of list contain "link" this element is a link by default it is a text
+		const ulist = document.createElement('ul');
 
 		for (let i = 0; i < linkText.length ; i++){
 			let element = linkText[i];
@@ -156,7 +90,7 @@ const log = console.log;
 				}
 				
 				ulist.append(list);
-				log('daww');
+				log('daww')
 
 
 
@@ -174,20 +108,20 @@ const log = console.log;
 
 		}
 		 ulist.style = `display:none;position:fixed;`;
-		this._self.head.addEventListener('click', function(e){
+		head.addEventListener('click', function(e){
 			e.preventDefault();
 			e.stopPropagation();
-			this._self.clickonoff = !this._self.clickonoff;
+			_self.clickonoff = !_self.clickonoff;
 			setTimeout(function(){
-			if (this._self.clickonoff ){
-				if (this._self.holdnavigation !== null){
-					this._self.holdnavigation.style.display = 'none';
+			if (_self.clickonoff ){
+				if (_self.holdnavigation !== null){
+					_self.holdnavigation.style.display = 'none';
 				}
 				
-				const left = parseFloat(this._self.head.style.left, 10);
-				const top = parseFloat(this._self.head.style.top, 10);
-				const listcorners = [[left  - W ,top  -this._self.diameter/2- L*linkText.length],[left - W, top + this._self.diameter],
-				[left + this._self.diameter , top - this._self.diameter/2 - L*linkText.length],[left + this._self.diameter, top+this._self.diameter - L]]
+				const left = parseFloat(head.style.left, 10);
+				const top = parseFloat(head.style.top, 10);
+				const listcorners = [[left  - W ,top  -_self.diameter/2- L*linkText.length],[left - W, top + _self.diameter],
+				[left + _self.diameter , top - _self.diameter/2 - L*linkText.length],[left + _self.diameter, top+_self.diameter - L]]
 				//[top left], [down left],[]
 				let defaultcorner = listcorners[3];
 				if ((listcorners[3][0] < window.innerWidth - W) && (listcorners[3][1] < window.innerHeight - L*linkText.length)){
@@ -216,20 +150,23 @@ const log = console.log;
 			
 			}
 
-			}.bind(this), 200)
+			}, 200)
 
 			
-		}.bind(this))
-		this._self.body.append(ulist);
-	},
-	addtouchhold: function(listarray, backcolor, onmousecolor){
-		const leftcenter = parseFloat(this._self.head.style.left, 10) + this._self.diameter/2 -20;
-			const topcenter = parseFloat(this._self.head.style.top, 10) + this._self.diameter/2 -10;
+		})
+		body.append(ulist);
+
+	}//end of selfclick
+
+
+	_self.addtouchhold = function(listarray, backcolor, onmousecolor){
+		const leftcenter = parseFloat(head.style.left, 10) + _self.diameter/2 -20;
+			const topcenter = parseFloat(head.style.top, 10) + _self.diameter/2 -10;
 			const selected = window.location.href.replace(( window.location.origin + '/') , '');
 			const selectedlink = listarray[selected];
 			log(selectedlink)
 			if (selectedlink ){
-			 this._self.holdnavigation = document.createElement('div');
+			 _self.holdnavigation = document.createElement('div');
 			
 				for (let i = 0; i< selectedlink.length ; i++ ){
 					const button = document.createElement('button');
@@ -251,89 +188,149 @@ const log = console.log;
 					// button.onclick = "href =  " + `#${selectedlink[i]}`;
 					log(i)
 					if(i === 0){
-						const top = topcenter-this._self.diameter
+						const top = topcenter-_self.diameter
 						button.id = 'b0';
 						button.style = `left:${leftcenter}px;top: ${top}px;position:fixed; 
 						border-radius:20px; background-color: ${backcolor};transition: all 0.5s ease-in-out;`
 					}
 					else if (i ===1){
-						const top = topcenter+this._self.diameter
+						const top = topcenter+_self.diameter
 						button.id = 'b1'
 						button.style = `position:fixed;left:${leftcenter}px ;top: ${top}px;border-radius:20px;
 						background-color: ${backcolor};transition: all 0.5s ease-in-out;`
 					}
 					else if (i === 2 ){
-						const left = leftcenter - this._self.diameter;
+						const left = leftcenter - _self.diameter;
 						button.id = 'b2'
 						button.style = `position:fixed;left:${left}px; ;top: ${topcenter}px ;border-radius:20px;
 						background-color: ${backcolor};transition: all 0.5s ease-in-out;`
 					}else if(i ===3){
-						const left = leftcenter + this._self.diameter;
+						const left = leftcenter + _self.diameter;
 						button.id = 'b3'
 						button.style = `position:fixed;left:${left}px;top: ${topcenter}px;border-radius:20px;
 						background-color: ${backcolor}; transition: all 0.5s ease-in-out; `
 					}
-					this._self.holdnavigation.append(button);
-					this._self.holdnavigation.style = 'display:none;'
+					_self.holdnavigation.append(button);
+					_self.holdnavigation.style = 'display:none;'
 					
 				}
-				this._self.body.append(this._self.holdnavigation);
+				body.append(_self.holdnavigation);
 
 				head.addEventListener('mouseenter', function(e){
-					const leftcenter = parseFloat(this._self.head.style.left, 10) + this._self.diameter/2 -20;
-					const topcenter = parseFloat(this._self.head.style.top, 10) + this._self.diameter/2 -10; 
+					const leftcenter = parseFloat(head.style.left, 10) + _self.diameter/2 -20;
+					const topcenter = parseFloat(head.style.top, 10) + _self.diameter/2 -10; 
 					for (let i = 0; i< selectedlink.length ; i++ ){
 						const ids = document.getElementById('b' + i);
 						if ( i === 0){
-							const top = topcenter-this._self.diameter
+							const top = topcenter-_self.diameter
 							ids.style.left = leftcenter + 'px';
 							ids.style.top = top + 'px';
 						}else if(i === 1){
-							const top = topcenter+this._self.diameter
+							const top = topcenter+_self.diameter
 							ids.style.left = leftcenter + 'px';
 							ids.style.top = top + 'px';
 						}else if(i === 2){
-							const left = leftcenter -this._self.diameter;
+							const left = leftcenter - _self.diameter;
 							ids.style.left = left + 'px';
 							ids.style.top = topcenter + 'px'; 
 						}else if (i === 3){
-							const left = leftcenter + this._self.diameter;
+							const left = leftcenter + _self.diameter;
 							ids.style.left = left + 'px';
 							ids.style.top = topcenter + 'px';
 						}
 						
 					}
-						if (this._self.clickonoff){
-						this._self.mousedown = false;
+						if (_self.clickonoff){
+						_self.mousedown = false;
 					}else{
-						this._self.mousedown = true;
+						_self.mousedown = true;
 
 					}
 					
 					setTimeout(function(){
-						if (this._self.clickonoff){
-						this._self.mousedown = false;
+						if (_self.clickonoff){
+						_self.mousedown = false;
 					}else{
-						this._self.mousedown = true;
+						_self.mousedown = true;
 
 					}
-					if(this._self.mousedown){
-							this._self.holdnavigation.style.display = 'block';
+					if(_self.mousedown){
+							_self.holdnavigation.style.display = 'block';
 
 						}
-					}.bind(this),1000)
+					},1000)
 
-				}.bind(this))
+				})
 				head.addEventListener('mouseleave', function(e){
 					
 					setTimeout(function(){
-					this._self.mousedown= false;
-					this._self.holdnavigation.style.display = 'none'}.bind(this), 1000)
+					_self.mousedown= false;
+					_self.holdnavigation.style.display = 'none'}, 1000)
 					
-				}.bind(this))
+				})
 		} //Solely to prevent from looking for something that does not exist
+		
 	}
 
-	}
-	global.Head = global.Head || Head
-})(window);
+	if (_self.draggable ){
+
+		head.draggable = true;
+		
+		head.addEventListener('dragstart', function(event){
+			if(_self.clickonoff){
+				event.preventDefault();
+			}else{
+			const style = window.getComputedStyle(event.target, null);
+			if (_self.holdnavigation !== null){
+				_self.holdnavigation.style.display = 'none';
+			}
+			
+			// head.style.width = (10 + parseFloat(style.getPropertyValue("width"),10)) + 'px' ;
+			// head.style.height = (10 + parseFloat(style.getPropertyValue("height"),10)) + 'px' ; 
+
+
+		    event.dataTransfer.setData("text/plain",
+		    ( parseFloat(style.getPropertyValue("left"),10) - event.clientX) + ',' + 
+		    (parseFloat(style.getPropertyValue("top"),10) - event.clientY));
+			}
+		},false);
+
+
+
+
+		document.documentElement.addEventListener('dragover', function(event){
+			event.preventDefault(); 
+			head.style.display = 'none';
+			// ulist.style = `left: ${head.style.left}px;right: ${head.style.right}px ;`
+			log(head.style.left + head.style.top)
+
+			
+   
+		}, false);
+
+
+		document.documentElement.addEventListener('drop', function(event){
+			event.preventDefault();
+			head.style.display = 'block';
+			// head.style.width = ( parseFloat(head.style.width,10) - 10 ) + 'px' ;
+			// head.style.height = ( parseFloat(head.style.height,10) - 10) + 'px' ; 
+			const offset = event.dataTransfer.getData("text/plain").split(',');
+		   
+		    head.style.left = (event.clientX + parseFloat(offset[0],10)) + 'px';
+		    head.style.top = (event.clientY + parseFloat(offset[1],10)) + 'px';
+	
+    		
+		}, false);
+		
+	}//For draggable
+	
+
+
+	
+	body.append(head);
+	
+	return _self;
+
+
+
+}

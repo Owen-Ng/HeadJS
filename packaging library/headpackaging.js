@@ -1,11 +1,11 @@
 "use strict"
-const log = console.log;
+const log = console.log
 
 (function(global){
 
-	function Head(startcoord,diameter, backimg, draggable){
+	function head(startcoord,diameter, backimg, draggable){
 
-	this._self = {};
+				this._self = {};
 	this._self.coord = startcoord;
 	this._self.diameter = diameter;
 	this._self.backimg = backimg;
@@ -35,16 +35,15 @@ const log = console.log;
 	dochead.append(style);
 
 	head.id = 'head';
-	log(this._self.diameter);
-	head.style = `top: ${this._self.coord[0]}px;left: ${this._self.coord[1]}px;width: ${this._self.diameter}px; height: ${this._self.diameter}px;`
+	log(this._self.coord)
+	head.style = `top: ${this._self.coord[0]}px;left: ${this._self.coord[1]}px;width: ${this._self.diameter}px; height: ${this.self.diameter}px;`
 	// `top: 0;left: 0;width: 60px; height: 60px;`
 	
-	if (this._self.draggable ){
+	if (_self.draggable ){
 
 		head.draggable = true;
 		
-		head.addEventListener('dragstart', function( event){
-			log(this._self)
+		head.addEventListener('dragstart', function(event){
 			if(this._self.clickonoff){
 				event.preventDefault();
 			}else{
@@ -61,7 +60,7 @@ const log = console.log;
 		    ( parseFloat(style.getPropertyValue("left"),10) - event.clientX) + ',' + 
 		    (parseFloat(style.getPropertyValue("top"),10) - event.clientY));
 			}
-		}.bind(this),false);
+		},false);
 
 
 
@@ -70,7 +69,7 @@ const log = console.log;
 			event.preventDefault(); 
 			head.style.display = 'none';
 			// ulist.style = `left: ${head.style.left}px;right: ${head.style.right}px ;`
-			log(head.style.left + head.style.top);
+			log(head.style.left + head.style.top)
 
 			
    
@@ -96,22 +95,20 @@ const log = console.log;
 
 	
 	body.append(head);
-	this._self.head = head;
-	this._self.body = body;
 	
-	// return this._self;
+	return this._self;
 
 
 
 	}
-	Head.prototype ={
+	head.prototype ={
 		addoubleclick: function(link){
-			this._self.head.addEventListener('dblclick', function(e){
+			head.addEventListener('dblclick', function(e){
 			const select = window.location.href.replace(( window.location.origin + '/') , '');
 			log(select);
 			this._self.currentpage = link.indexOf(select);
 			// log(indexselect)
-			log(this._self.currentpage);
+			log(this._self.currentpage)
 				if (this._self.currentpage >= link.length - 1){
 						this._self.currentpage = 0;
 
@@ -126,7 +123,7 @@ const log = console.log;
 					e.preventDefault();
 					window.location.href = window.location.protocol + "/" + link[this._self.currentpage];
 				}
-			}.bind(this));
+			})
 
 		
 		},
@@ -156,7 +153,7 @@ const log = console.log;
 				}
 				
 				ulist.append(list);
-				log('daww');
+				log('daww')
 
 
 
@@ -174,7 +171,7 @@ const log = console.log;
 
 		}
 		 ulist.style = `display:none;position:fixed;`;
-		this._self.head.addEventListener('click', function(e){
+		head.addEventListener('click', function(e){
 			e.preventDefault();
 			e.stopPropagation();
 			this._self.clickonoff = !this._self.clickonoff;
@@ -184,8 +181,8 @@ const log = console.log;
 					this._self.holdnavigation.style.display = 'none';
 				}
 				
-				const left = parseFloat(this._self.head.style.left, 10);
-				const top = parseFloat(this._self.head.style.top, 10);
+				const left = parseFloat(head.style.left, 10);
+				const top = parseFloat(head.style.top, 10);
 				const listcorners = [[left  - W ,top  -this._self.diameter/2- L*linkText.length],[left - W, top + this._self.diameter],
 				[left + this._self.diameter , top - this._self.diameter/2 - L*linkText.length],[left + this._self.diameter, top+this._self.diameter - L]]
 				//[top left], [down left],[]
@@ -216,15 +213,15 @@ const log = console.log;
 			
 			}
 
-			}.bind(this), 200)
+			}, 200)
 
 			
-		}.bind(this))
-		this._self.body.append(ulist);
+		})
+		body.append(ulist);
 	},
 	addtouchhold: function(listarray, backcolor, onmousecolor){
-		const leftcenter = parseFloat(this._self.head.style.left, 10) + this._self.diameter/2 -20;
-			const topcenter = parseFloat(this._self.head.style.top, 10) + this._self.diameter/2 -10;
+		const leftcenter = parseFloat(head.style.left, 10) + this._self.diameter/2 -20;
+			const topcenter = parseFloat(head.style.top, 10) + this._self.diameter/2 -10;
 			const selected = window.location.href.replace(( window.location.origin + '/') , '');
 			const selectedlink = listarray[selected];
 			log(selectedlink)
@@ -277,11 +274,11 @@ const log = console.log;
 					this._self.holdnavigation.style = 'display:none;'
 					
 				}
-				this._self.body.append(this._self.holdnavigation);
+				body.append(this._self.holdnavigation);
 
 				head.addEventListener('mouseenter', function(e){
-					const leftcenter = parseFloat(this._self.head.style.left, 10) + this._self.diameter/2 -20;
-					const topcenter = parseFloat(this._self.head.style.top, 10) + this._self.diameter/2 -10; 
+					const leftcenter = parseFloat(head.style.left, 10) + this._self.diameter/2 -20;
+					const topcenter = parseFloat(head.style.top, 10) + this._self.diameter/2 -10; 
 					for (let i = 0; i< selectedlink.length ; i++ ){
 						const ids = document.getElementById('b' + i);
 						if ( i === 0){
@@ -321,19 +318,20 @@ const log = console.log;
 							this._self.holdnavigation.style.display = 'block';
 
 						}
-					}.bind(this),1000)
+					},1000)
 
-				}.bind(this))
+				})
 				head.addEventListener('mouseleave', function(e){
 					
 					setTimeout(function(){
 					this._self.mousedown= false;
-					this._self.holdnavigation.style.display = 'none'}.bind(this), 1000)
+					this._self.holdnavigation.style.display = 'none'}, 1000)
 					
-				}.bind(this))
+				})
 		} //Solely to prevent from looking for something that does not exist
 	}
 
 	}
-	global.Head = global.Head || Head
+	global.head = global.head || head
+
 })(window);
