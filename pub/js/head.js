@@ -82,7 +82,7 @@ const log = console.log;
   		this._self.dragging = null;
 
 	}
-	function onDragMove(e) {
+	function ondragmove(e) {
 		e.preventDefault();
 		if (!this._self.dragging) { return; }
 			this._self.clickonoff = true;
@@ -109,8 +109,9 @@ const log = console.log;
 		head.addEventListener('mousedown', ondrag.bind(this))
 	 document.addEventListener('mouseup', dragdrop.bind(this))
 	document.addEventListener('mouseleave', dragdrop.bind(this))
-	document.addEventListener('mousemove', onDragMove.bind(this));
+	document.addEventListener('mousemove', ondragmove.bind(this));
 	}
+
 	
 	// if (this._self.draggable ){
 
@@ -247,6 +248,11 @@ const log = console.log;
 
 		}
 		 ulist.style = `display:none;position:fixed;`;
+		 	document.addEventListener('click', function(e){
+			// e.preventDefault()
+			ulist.style = `display: none`
+			this._self.clickonoff = false;
+		}.bind(this));
 		this._self.head.addEventListener('click', function(e){
 			e.preventDefault();
 			e.stopPropagation();
@@ -293,6 +299,7 @@ const log = console.log;
 
 			
 		}.bind(this))
+	
 		this._self.body.append(ulist);
 	},
 	addtouchhold: function(listarray, backcolor, onmousecolor){
@@ -394,14 +401,15 @@ const log = console.log;
 							this._self.holdnavigation.style.display = 'block';
 
 						}
-					}.bind(this),1000)
+					}.bind(this),1100)
 
 				}.bind(this))
 				head.addEventListener('mouseleave', function(e){
 					
 					setTimeout(function(){
 					this._self.mousedown= false;
-					this._self.holdnavigation.style.display = 'none'}.bind(this), 1000)
+					this._self.holdnavigation.style.display = 'none'
+					}.bind(this), 1000)
 					
 				}.bind(this))
 		} //Solely to prevent from looking for something that does not exist
