@@ -19,7 +19,6 @@ const log = console.log;
 
 	const body = document.querySelector('body');
 
-	// let clickonoff= false; 
 	const head = document.createElement('span');
 	const style = document.createElement('style');
 
@@ -38,27 +37,12 @@ const log = console.log;
  				padding:0px; margin:0px; background-color: ${this._self.backimg};background-size:${backimgsize}px;};`
  	}
 	dochead.append(style);
-
+	head.className = 'customhead'
 	head.id = 'head';
+
 	head.style = `top: ${this._self.coord[0]}px;left: ${this._self.coord[1]}px;width: ${this._self.diameter}px; height: ${this._self.diameter}px;`
 	
-	
-	function ondrag(event){
-
-			if ( this._self.clickonoff){
-				event.preventDefault();
-			}else{
-			
-				this._self.dragging ={
-				element: event.target,
-				speed: { x: 0, y: 0 },
-				oldPos: { x: event.offsetX, y: event.offsetY },
-	    		offset: { x: event.offsetX, y: event.offsetY },
-	    		
-	    		
-			}
-		}
-	}
+	//Animation method dupplicating
 	function duplicating(body){
 		const head1 = document.querySelector('#head');
 		const headclone = head1.cloneNode(true);
@@ -72,6 +56,7 @@ const log = console.log;
 			node.parentNode.removeChild(node);
 		},70)
 	}
+	//animation methid icon image
 	function iconimg(body, img){
 		const head1 = document.querySelector('#head');
 		const headclone = head1.cloneNode(true);
@@ -88,6 +73,24 @@ const log = console.log;
 			node.parentNode.removeChild(node);
 		},70)
 	}
+	//Start dragging the element
+	function ondrag(event){
+
+			if ( this._self.clickonoff){
+				event.preventDefault();
+			}else{
+			
+				this._self.dragging ={
+				element: event.target,
+				speed: { x: 0, y: 0 },
+				oldPos: { x: event.offsetX, y: event.offsetY },
+	    		offset: { x: event.offsetX, y: event.offsetY },
+	    		
+	    		
+			}
+		}
+	}
+	//Method When stop dragging the element
 	function dragdrop(){
 		
 		if (!this._self.dragging){return;}
@@ -119,6 +122,7 @@ const log = console.log;
   		this._self.dragging = null;
 
 	}
+	//While dragging the element
 	function ondragmove(e) {
 		e.preventDefault();
 		e.stopPropagation()
@@ -152,97 +156,33 @@ const log = console.log;
 		  	applyPos(this._self.dragging.element, pos);
 		  
 		}
+		//Apply change to the position
 	function applyPos(element, pos) {
-
-
 		element.style.top = `${Math.max(0, Math.min(pos.y.toFixed(3), window.innerHeight - parseFloat(element.style.height)))}px`;
 		element.style.left = `${Math.max(0, Math.min(pos.x.toFixed(3), window.innerWidth - parseFloat(element.style.height)))}px`;
 	}
 
-
+	//Checking if dragging is allowed
 	if (this._self.draggable){
 		head.draggable = true;
 		head.addEventListener('mousedown', ondrag.bind(this))
-	 document.addEventListener('mouseup', dragdrop.bind(this))
-	document.addEventListener('mouseleave', dragdrop.bind(this))
-	document.addEventListener('mousemove', ondragmove.bind(this));
+		document.addEventListener('mouseup', dragdrop.bind(this))
+		document.addEventListener('mouseleave', dragdrop.bind(this))
+		document.addEventListener('mousemove', ondragmove.bind(this));
 	}
-
-	
-	// if (this._self.draggable ){
-
-	// 	head.draggable = true;
-		
-	// 	head.addEventListener('dragstart', function( event){
-	// 		log(this._self)
-	// 		if(this._self.clickonoff){
-	// 			event.preventDefault();
-	// 		}else{
-	// 		const style = window.getComputedStyle(event.target, null);
-	// 		if (this._self.holdnavigation !== null){
-	// 			this._self.holdnavigation.style.display = 'none';
-	// 		}
-			
-	// 		// head.style.width = (10 + parseFloat(style.getPropertyValue("width"),10)) + 'px' ;
-	// 		// head.style.height = (10 + parseFloat(style.getPropertyValue("height"),10)) + 'px' ; 
-
-
-	// 	    event.dataTransfer.setData("text/plain",
-	// 	    ( parseFloat(style.getPropertyValue("left"),10) - event.clientX) + ',' + 
-	// 	    (parseFloat(style.getPropertyValue("top"),10) - event.clientY));
-	// 		}
-	// 	}.bind(this),false);
-
-
-
-
-	// 	document.addEventListener('dragover', function(event){
-	// 		event.preventDefault(); 
-	// 		head.style.display = 'none';
-	// 		// ulist.style = `left: ${head.style.left}px;right: ${head.style.right}px ;`
-	// 		log(head.style.left + head.style.top);
-
-			
-   
-	// 	}, false);
-
-
-	// 	document.addEventListener('drop', function(event){
-	// 		event.preventDefault();
-	// 		head.style.display = 'block';
-	// 		// head.style.width = ( parseFloat(head.style.width,10) - 10 ) + 'px' ;
-	// 		// head.style.height = ( parseFloat(head.style.height,10) - 10) + 'px' ; 
-	// 		const offset = event.dataTransfer.getData("text/plain").split(',');
-		   
-	// 	    head.style.left = (event.clientX + parseFloat(offset[0],10)) + 'px';
-	// 	    head.style.top = (event.clientY + parseFloat(offset[1],10)) + 'px';
-	
-    		
-	// 	}, false);
-		
-	// }//For draggable
-	
-
 
 	
 	body.append(head);
-	
 	this._self.head = head;
 	this._self.body = body;
 
-	
-	// return this._self;
-
-
-
 	}
 	Head.prototype ={
+		//Method to implement double click navigation between different screens set by the user
 		addoubleclick: function(link){
 			this._self.head.addEventListener('dblclick', function(e){
 			const select = window.location.href.replace(( window.location.origin + '/') , '');
-			log(select);
 			this._self.currentpage = link.indexOf(select);
-			// log(indexselect)
 			log(this._self.currentpage);
 				if (this._self.currentpage >= link.length - 1){
 						this._self.currentpage = 0;
@@ -262,112 +202,121 @@ const log = console.log;
 
 		
 		},
-		addclicklist: function(linkText, W, L, backgroundcolor, onmousecolor){
+		//Method to implement a click event that will display a list when clicked
+		addclicklist: function(listarray, W, L, backgroundcolor, onmousecolor){
 			const ulist = document.createElement('ul');
+			const selected = window.location.href.replace(( window.location.origin + '/') , '');
+			const linkText = listarray[selected];
+			for (let i = 0; i < linkText.length ; i++){
+				let element = linkText[i];
+				if (element.split(' ')[0] === 'link'){
+					const list = document.createElement('li');
+					const link = document.createElement('a');
+					link.href = element.split(' ')[1];
+					link.style = `text-decoration: none; color:black`
+					// _self.linklist.push(link.href);
+					link.innerHTML = element.split(' ').slice(2).join(' ');
+					list.draggable = 'false';
+					list.style = `width: ${W}px; height: ${L}px; border: 1px solid black;
+					 margin: 2px; text-align: center; border-radius:20px;transition: all 1s ease-in-out;background-color: ${backgroundcolor} `
+					list.append(link);
+					if (onmousecolor){
+						list.addEventListener('mouseenter',function(e){
+						list.style.backgroundColor = onmousecolor;
+					})
+					list.addEventListener('mouseleave', function(e){
+						list.style.backgroundColor = backgroundcolor;
+					})
+					}
+					
+					ulist.append(list);
 
-		for (let i = 0; i < linkText.length ; i++){
-			let element = linkText[i];
-			if (element.split(' ')[0] === 'link'){
-				const list = document.createElement('li');
-				const link = document.createElement('a');
-				link.href = element.split(' ')[1];
-				link.style = `text-decoration: none; color:black`
-				// _self.linklist.push(link.href);
-				link.innerHTML = element.split(' ').slice(2).join(' ');
-				list.draggable = 'false';
-				list.style = `width: ${W}px; height: ${L}px; border: 1px solid black;
-				 margin: 2px; text-align: center; border-radius:20px;transition: all 1s ease-in-out;background-color: ${backgroundcolor} `
-				list.append(link);
-				if (onmousecolor){
-					list.addEventListener('mouseenter',function(e){
-					list.style.backgroundColor = onmousecolor;
-				})
-				list.addEventListener('mouseleave', function(e){
-					list.style.backgroundColor = backgroundcolor;
-				})
+
+
+				}else{
+					const list = document.createElement('li');
+					list.innerHTML = element;
+					list.draggable = 'false'
+					list.style = `width: ${W}px; height: ${L}px;
+					 border: 1px solid black; margin: 2px;text-align: center; border-radius:20px;background-color: ${backgroundcolor}`
+					ulist.append(list);
+
+
 				}
-				
-				ulist.append(list);
-				log('daww');
-
-
-
-			}else{
-				const list = document.createElement('li');
-				list.innerHTML = element;
-				list.draggable = 'false'
-				list.style = `width: ${W}px; height: ${L}px;
-				 border: 1px solid black; margin: 2px;text-align: center; border-radius:20px;background-color: ${backgroundcolor}`
-				ulist.append(list);
 
 
 			}
+			ulist.style = `display:none;position:fixed;`;
+			document.addEventListener('click', function(e){
+				ulist.style = `display: none`
+				this._self.clickonoff = false;
+			}.bind(this));
+			this._self.head.addEventListener('click', function(e){
+				e.preventDefault();
+				e.stopPropagation();
+				this._self.clickonoff = !this._self.clickonoff;
+				setTimeout(function(){
+				if (this._self.clickonoff ){
+					if (this._self.holdnavigation !== null){
+						this._self.holdnavigation.style.display = 'none';
+					}
+					if (this._self.animation === undefined){}
+			 		else if( this._self.animation.includes("shadowing")){
+			 			head.style.boxShadow = this._self.animation.split(" ").slice(1).join(' ');
+			 		}
 
+					
+					const left = parseFloat(this._self.head.style.left, 10);
+					const top = parseFloat(this._self.head.style.top, 10);
+					const listcorners = [[left  - W ,top  -this._self.diameter/2- L*linkText.length],[left - W, top + this._self.diameter],
+					[left + this._self.diameter , top - this._self.diameter/2 - L*linkText.length],[left + this._self.diameter, top+this._self.diameter - L]]
+					//[top left], [down left],[]
+					let defaultcorner = listcorners[3];
+					if ((listcorners[3][0] < window.innerWidth - W) && (listcorners[3][1] < window.innerHeight - L*linkText.length)){
+						//down right
+						log((listcorners[3][1] < screen.height - L))
+						log(listcorners[3][1])
+						log('dr')
+					}else if ((listcorners[0][0] > W) && (listcorners[0][1] > L)){
+						//top left
+						log('tl')
+						defaultcorner = listcorners[0]
+					}else if ((listcorners[1][0] > W) && (listcorners[1][1] < window.innerHeight- L)){
+						//down left
+						log('dl')
+						defaultcorner = listcorners[1]
+					}else if((listcorners[2][0] < window.innerWidth- W) && (listcorners[2][1] > L)){
+						//top right 
+						log('tr')
+						defaultcorner = listcorners[2]
+					}
 
-		}
-		 ulist.style = `display:none;position:fixed;`;
-		 	document.addEventListener('click', function(e){
-			// e.preventDefault()
-			ulist.style = `display: none`
-			this._self.clickonoff = false;
-		}.bind(this));
-		this._self.head.addEventListener('click', function(e){
-			e.preventDefault();
-			e.stopPropagation();
-			this._self.clickonoff = !this._self.clickonoff;
-			setTimeout(function(){
-			if (this._self.clickonoff ){
-				if (this._self.holdnavigation !== null){
-					this._self.holdnavigation.style.display = 'none';
-				}
+					ulist.style = `display:block; list-style: none;position: fixed;padding:0;
+					 left: ${defaultcorner[0]}px;top: ${defaultcorner[1]}px ;`
+				}else{
+					ulist.style = `display: none`;
+					if (this._self.animation === undefined){}
+					else if( this._self.animation.includes("shadowing")){
+	 					head.style.boxShadow = "";
+	 				}
 				
-				const left = parseFloat(this._self.head.style.left, 10);
-				const top = parseFloat(this._self.head.style.top, 10);
-				const listcorners = [[left  - W ,top  -this._self.diameter/2- L*linkText.length],[left - W, top + this._self.diameter],
-				[left + this._self.diameter , top - this._self.diameter/2 - L*linkText.length],[left + this._self.diameter, top+this._self.diameter - L]]
-				//[top left], [down left],[]
-				let defaultcorner = listcorners[3];
-				if ((listcorners[3][0] < window.innerWidth - W) && (listcorners[3][1] < window.innerHeight - L*linkText.length)){
-					//down right
-					log((listcorners[3][1] < screen.height - L))
-					log(listcorners[3][1])
-					log('dr')
-				}else if ((listcorners[0][0] > W) && (listcorners[0][1] > L)){
-					//top left
-					log('tl')
-					defaultcorner = listcorners[0]
-				}else if ((listcorners[1][0] > W) && (listcorners[1][1] < window.innerHeight- L)){
-					//down left
-					log('dl')
-					defaultcorner = listcorners[1]
-				}else if((listcorners[2][0] < window.innerWidth- W) && (listcorners[2][1] > L)){
-					//top right 
-					log('tr')
-					defaultcorner = listcorners[2]
 				}
 
-				ulist.style = `display:block; list-style: none;position: fixed;padding:0;
-				 left: ${defaultcorner[0]}px;top: ${defaultcorner[1]}px ;`
-			}else{
-				ulist.style = `display: none`;
-			
-			}
+				}.bind(this), 200)
 
-			}.bind(this), 200)
-
-			
-		}.bind(this))
-	
-		this._self.body.append(ulist);
-	},
+				
+			}.bind(this))
+		
+			this._self.body.append(ulist);
+		},
+	//method added on mouse listener to display buttons that will navigate between screens
 	addtouchhold: function(listarray, backcolor, onmousecolor){
 		const leftcenter = parseFloat(this._self.head.style.left, 10) + this._self.diameter/2 -20;
-			const topcenter = parseFloat(this._self.head.style.top, 10) + this._self.diameter/2 -10;
-			const selected = window.location.href.replace(( window.location.origin + '/') , '');
-			const selectedlink = listarray[selected];
-			log(selectedlink)
-			if (selectedlink ){
-			 this._self.holdnavigation = document.createElement('div');
+		const topcenter = parseFloat(this._self.head.style.top, 10) + this._self.diameter/2 -10;
+		const selected = window.location.href.replace(( window.location.origin + '/') , '');
+		const selectedlink = listarray[selected];
+		if (selectedlink ){
+			this._self.holdnavigation = document.createElement('div');
 			
 				for (let i = 0; i< selectedlink.length ; i++ ){
 					const button = document.createElement('button');
@@ -385,9 +334,6 @@ const log = console.log;
 							button.style.backgroundColor = backcolor;
 						})
 					}
-					// log("href =  " + `#${selectedlink[i]}`)
-					// button.onclick = "href =  " + `#${selectedlink[i]}`;
-					log(i)
 					if(i === 0){
 						const top = topcenter-this._self.diameter
 						button.id = 'b0';
