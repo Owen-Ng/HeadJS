@@ -3,7 +3,7 @@ const log = console.log;
 
 (function(global){
 
-	function Head(startcoord,diameter, backimg, draggable){
+	function Head(startcoord,diameter, backimg, draggable, animation){
 
 	this._self = {};
 	this._self.coord = startcoord;
@@ -15,7 +15,7 @@ const log = console.log;
 	this._self.currentpage = null;
 	this._self.holdnavigation = null;
 	this._self.dragging = null;
-	this._self.animation = null;
+	this._self.animation = animation;
 
 	const body = document.querySelector('body');
 
@@ -40,54 +40,58 @@ const log = console.log;
 	dochead.append(style);
 
 	head.id = 'head';
-	log(this._self.diameter);
 	head.style = `top: ${this._self.coord[0]}px;left: ${this._self.coord[1]}px;width: ${this._self.diameter}px; height: ${this._self.diameter}px;`
-	// `top: 0;left: 0;width: 60px; height: 60px;`
+	
 	
 	function ondrag(event){
-		//this._self.animation = setInterval(flashing(this._self.body),500);
 
-		if ( this._self.clickonoff){
-			event.preventDefault();
-		}else{
+			if ( this._self.clickonoff){
+				event.preventDefault();
+			}else{
 			
-			this._self.dragging ={
-			element: event.target,
-			speed: { x: 0, y: 0 },
-			oldPos: { x: event.offsetX, y: event.offsetY },
-    		offset: { x: event.offsetX, y: event.offsetY },
-    		
-    		
+				this._self.dragging ={
+				element: event.target,
+				speed: { x: 0, y: 0 },
+				oldPos: { x: event.offsetX, y: event.offsetY },
+	    		offset: { x: event.offsetX, y: event.offsetY },
+	    		
+	    		
+			}
 		}
-			
-		}
-		
-
 	}
-	function flashing(body){
-		
-		
-			const head1 = document.querySelector('#head');
+	function duplicating(body){
+		const head1 = document.querySelector('#head');
 		const headclone = head1.cloneNode(true);
 		headclone.id = 'headclone'
-		
 		body.append(headclone);
 
 		setTimeout(function(){
 			
 			const node = document.getElementById("headclone")
-			console.log(node.style)
+			
 			node.parentNode.removeChild(node);
-		},5000)
+		},70)
+	}
+	function iconimg(body, img){
+		const head1 = document.querySelector('#head');
+		const headclone = head1.cloneNode(true);
+		headclone.id = 'headclone';
+		headclone.style.backgroundImage = img
+		body.append(headclone);
 
-		
-		
-		
+		setTimeout(function(){
+			
+			const node = document.getElementById("headclone")
+			
+			node.parentNode.removeChild(node);
+		},70)
 	}
 	function dragdrop(){
 		
 		if (!this._self.dragging){return;}
-		clearInterval(this._self.animation)
+
+		
+
 		const _dragging = this._self.dragging;
 		if (_dragging.speed.x !== 0 && _dragging.speed.y !== 0){
 		const updatePos = () => {
@@ -106,7 +110,10 @@ const log = console.log;
     	}
     	requestAnimationFrame(updatePos);
  		}
-
+ 		if (this._self.animation === undefined){}
+ 		else if( this._self.animation.includes("shadowing")){
+ 			head.style.boxShadow = "";
+ 		}
   		this._self.dragging = null;
 
 	}
@@ -115,24 +122,36 @@ const log = console.log;
 		e.stopPropagation()
 		
 		if (!this._self.dragging) { return; }
-		this._self.animation = setInterval( flashing(body), 200)
+			if(this._self.animation === undefined){
+
+			}
+			else if (this._self.animation === "duplicating"){
+				duplicating(body)
+			}
+			else if (this._self.animation === "iconimg"){
+				iconimg(body, img);
+			}else if( this._self.animation.includes("shadowing")){
+				head.style.boxShadow = this._self.animation.split(" ").slice(1).join(' ');
+			}
+			
+		
 			this._self.clickonoff = true;
 			if (this._self.holdnavigation !== null){
 				this._self.holdnavigation.style.display = 'none';
 			}
 			
-		  const pos = {
+		  	const pos = {
 		  	x: e.clientX - this._self.dragging.offset.x,
 		    y: e.clientY - this._self.dragging.offset.y,
-		  };
-		  this._self.dragging.speed.x = pos.x - this._self.dragging.oldPos.x;
-		  this._self.dragging.speed.y = pos.y - this._self.dragging.oldPos.y;
-		  this._self.dragging.oldPos = pos;
-		  applyPos(this._self.dragging.element, pos);
-		  // this._self.animation = setInterval(flashing(body),5000);
+		  	};
+		  	this._self.dragging.speed.x = pos.x - this._self.dragging.oldPos.x;
+		  	this._self.dragging.speed.y = pos.y - this._self.dragging.oldPos.y;
+		  	this._self.dragging.oldPos = pos;
+		  	applyPos(this._self.dragging.element, pos);
+		  
 		}
 	function applyPos(element, pos) {
-		
+
 
 		element.style.top = `${Math.max(0, Math.min(pos.y.toFixed(3), window.innerHeight - parseFloat(element.style.height)))}px`;
 		element.style.left = `${Math.max(0, Math.min(pos.x.toFixed(3), window.innerWidth - parseFloat(element.style.height)))}px`;
