@@ -15,6 +15,7 @@ const log = console.log;
 	this._self.currentpage = null;
 	this._self.holdnavigation = null;
 	this._self.dragging = null;
+	this._self.animation = null;
 
 	const body = document.querySelector('body');
 
@@ -27,10 +28,14 @@ const log = console.log;
 
  	if (this._self.backimg.charAt(0) === "/"){
  			style.innerHTML = `	#head {display:block;position: fixed;z-index:1;	 border-radius: 50%;
- 				padding:0px; margin:0px;background-image: url(${this._self.backimg}) `
+ 				padding:0px; margin:0px;background-image: url(${this._self.backimg}) }
+ 				#headclone {display:block;position: fixed;z-index:0;	 border-radius: 50%;
+ 				padding:0px; margin:0px;background-image: url(${this._self.backimg})};`
  	}else{
  			style.innerHTML = `	#head {display:block;position: fixed;z-index:1;	 border-radius: 50%;
- 				padding:0px; margin:0px; background-color: ${this._self.backimg}; `
+ 				padding:0px; margin:0px; background-color: ${this._self.backimg}};
+ 				#headclone {display:block;position: fixed;z-index:0;	 border-radius: 50%;
+ 				padding:0px; margin:0px; background-color: ${this._self.backimg}};`
  	}
 	dochead.append(style);
 
@@ -38,28 +43,51 @@ const log = console.log;
 	log(this._self.diameter);
 	head.style = `top: ${this._self.coord[0]}px;left: ${this._self.coord[1]}px;width: ${this._self.diameter}px; height: ${this._self.diameter}px;`
 	// `top: 0;left: 0;width: 60px; height: 60px;`
+	
 	function ondrag(event){
-		
+		//this._self.animation = setInterval(flashing(this._self.body),500);
+
 		if ( this._self.clickonoff){
 			event.preventDefault();
 		}else{
-
+			
 			this._self.dragging ={
 			element: event.target,
 			speed: { x: 0, y: 0 },
 			oldPos: { x: event.offsetX, y: event.offsetY },
     		offset: { x: event.offsetX, y: event.offsetY },
-    	
+    		
     		
 		}
+			
 		}
 		
 
 	}
-	function dragdrop(){
-		console.log(this._self.dragging)
-		if (!this._self.dragging){return;}
+	function flashing(body){
 		
+		
+			const head1 = document.querySelector('#head');
+		const headclone = head1.cloneNode(true);
+		headclone.id = 'headclone'
+		
+		body.append(headclone);
+
+		setTimeout(function(){
+			
+			const node = document.getElementById("headclone")
+			console.log(node.style)
+			node.parentNode.removeChild(node);
+		},5000)
+
+		
+		
+		
+	}
+	function dragdrop(){
+		
+		if (!this._self.dragging){return;}
+		clearInterval(this._self.animation)
 		const _dragging = this._self.dragging;
 		if (_dragging.speed.x !== 0 && _dragging.speed.y !== 0){
 		const updatePos = () => {
@@ -84,11 +112,15 @@ const log = console.log;
 	}
 	function ondragmove(e) {
 		e.preventDefault();
+		e.stopPropagation()
+		
 		if (!this._self.dragging) { return; }
+		this._self.animation = setInterval( flashing(body), 200)
 			this._self.clickonoff = true;
 			if (this._self.holdnavigation !== null){
 				this._self.holdnavigation.style.display = 'none';
 			}
+			
 		  const pos = {
 		  	x: e.clientX - this._self.dragging.offset.x,
 		    y: e.clientY - this._self.dragging.offset.y,
@@ -97,12 +129,15 @@ const log = console.log;
 		  this._self.dragging.speed.y = pos.y - this._self.dragging.oldPos.y;
 		  this._self.dragging.oldPos = pos;
 		  applyPos(this._self.dragging.element, pos);
+		  // this._self.animation = setInterval(flashing(body),5000);
 		}
 	function applyPos(element, pos) {
+		
 
 		element.style.top = `${Math.max(0, Math.min(pos.y.toFixed(3), window.innerHeight - parseFloat(element.style.height)))}px`;
 		element.style.left = `${Math.max(0, Math.min(pos.x.toFixed(3), window.innerWidth - parseFloat(element.style.height)))}px`;
 	}
+
 
 	if (this._self.draggable){
 		head.draggable = true;
@@ -170,8 +205,10 @@ const log = console.log;
 
 	
 	body.append(head);
+	
 	this._self.head = head;
 	this._self.body = body;
+
 	
 	// return this._self;
 
