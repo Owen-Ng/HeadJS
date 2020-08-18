@@ -3,7 +3,7 @@ const log = console.log;
 
 (function(global){
 
-	function Head(startcoord,diameter, backimg, draggable, animation){
+	function Head(startcoord,diameter, backimg,backimgsize, draggable, animation){
 
 	this._self = {};
 	this._self.coord = startcoord;
@@ -28,14 +28,14 @@ const log = console.log;
 
  	if (this._self.backimg.charAt(0) === "/"){
  			style.innerHTML = `	#head {display:block;position: fixed;z-index:1;	 border-radius: 50%;
- 				padding:0px; margin:0px;background-image: url(${this._self.backimg}) }
+ 				padding:0px; margin:0px;background-image: url(${this._self.backimg}) ;background-size:${backimgsize}px;}
  				#headclone {display:block;position: fixed;z-index:0;	 border-radius: 50%;
- 				padding:0px; margin:0px;background-image: url(${this._self.backimg})};`
+ 				padding:0px; margin:0px;background-image: url(${this._self.backimg});background-size:${backimgsize}px;}`
  	}else{
  			style.innerHTML = `	#head {display:block;position: fixed;z-index:1;	 border-radius: 50%;
- 				padding:0px; margin:0px; background-color: ${this._self.backimg}};
+ 				padding:0px; margin:0px; background-color: ${this._self.backimg};background-size:${backimgsize}px;};
  				#headclone {display:block;position: fixed;z-index:0;	 border-radius: 50%;
- 				padding:0px; margin:0px; background-color: ${this._self.backimg}};`
+ 				padding:0px; margin:0px; background-color: ${this._self.backimg};background-size:${backimgsize}px;};`
  	}
 	dochead.append(style);
 
@@ -76,7 +76,9 @@ const log = console.log;
 		const head1 = document.querySelector('#head');
 		const headclone = head1.cloneNode(true);
 		headclone.id = 'headclone';
-		headclone.style.backgroundImage = img
+		
+		headclone.style.backgroundImage = `url(${img[1]})`
+		headclone.style.backgroundSize = img[2] + 'px';
 		body.append(headclone);
 
 		setTimeout(function(){
@@ -128,8 +130,8 @@ const log = console.log;
 			else if (this._self.animation === "duplicating"){
 				duplicating(body)
 			}
-			else if (this._self.animation === "iconimg"){
-				iconimg(body, img);
+			else if (this._self.animation.includes("iconimg")){
+				iconimg(body, this._self.animation.split(" "));
 			}else if( this._self.animation.includes("shadowing")){
 				head.style.boxShadow = this._self.animation.split(" ").slice(1).join(' ');
 			}
