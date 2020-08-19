@@ -203,7 +203,7 @@ const log = console.log;
 		
 		},
 		//Method to implement a click event that will display a list when clicked
-		addclicklist: function(listarray, W, L, backgroundcolor, onmousecolor){
+		addclicklist: function(listarray, W, L, backgroundcolor, onmouseanimation){
 			const ulist = document.createElement('ul');
 			const selected = window.location.href.replace(( window.location.origin + '/') , '');
 			const linkText = listarray[selected];
@@ -220,14 +220,25 @@ const log = console.log;
 					list.style = `width: ${W}px; height: ${L}px; border: 1px solid black;
 					 margin: 2px; text-align: center; border-radius:20px;transition: all 1s ease-in-out;background-color: ${backgroundcolor} `
 					list.append(link);
-					if (onmousecolor){
+					list.className = 'l'+ i;
+					if (onmouseanimation){
 						list.addEventListener('mouseenter',function(e){
-						list.style.backgroundColor = onmousecolor;
-					})
-					list.addEventListener('mouseleave', function(e){
-						list.style.backgroundColor = backgroundcolor;
-					})
+							if(onmouseanimation.includes('coloring')){
+								list.style.backgroundColor = onmouseanimation.split(' ')[1];
+							}else if (onmouseanimation === 'highlighting'){
+								list.style.textDecoration = 'underline';
+							}
+						
+						})
+						list.addEventListener('mouseleave', function(e){
+							if(onmouseanimation.includes('coloring')){
+								list.style.backgroundColor = backgroundcolor;
+							}else if (onmouseanimation === 'highlighting'){
+								list.style.textDecoration = 'none';
+							}
+						})
 					}
+			
 					
 					ulist.append(list);
 
@@ -239,6 +250,7 @@ const log = console.log;
 					list.draggable = 'false'
 					list.style = `width: ${W}px; height: ${L}px;
 					 border: 1px solid black; margin: 2px;text-align: center; border-radius:20px;background-color: ${backgroundcolor}`
+					list.className = 'l'+ i;
 					ulist.append(list);
 
 
@@ -310,9 +322,9 @@ const log = console.log;
 			this._self.body.append(ulist);
 		},
 	//method added on mouse listener to display buttons that will navigate between screens
-	addtouchhold: function(listarray, backcolor, onmousecolor){
-		const leftcenter = parseFloat(this._self.head.style.left, 10) + this._self.diameter/2 -20;
-		const topcenter = parseFloat(this._self.head.style.top, 10) + this._self.diameter/2 -10;
+	addtouchhold: function(listarray, backcolor, onmouseanimation){
+		const leftcenter = parseFloat(this._self.head.style.left, 10) + this._self.diameter/2 ;
+		const topcenter = parseFloat(this._self.head.style.top, 10) + this._self.diameter/2 ;
 		const selected = window.location.href.replace(( window.location.origin + '/') , '');
 		const selectedlink = listarray[selected];
 		if (selectedlink ){
@@ -326,33 +338,45 @@ const log = console.log;
 					abutton.style = `text-decoration: none; color: black; `
 					// button.innerHTML = selectedlink[i];
 					button.append(abutton);
-					if(onmousecolor){
+					button.className = 'b' + i;
+					if (onmouseanimation){
 						button.addEventListener('mouseenter',function(e){
-							button.style.backgroundColor = onmousecolor;
+							if(onmouseanimation.includes('coloring')){
+								button.style.backgroundColor = onmouseanimation.split(' ')[1];
+							}else if (onmouseanimation === 'highlighting'){
+								button.style.textDecoration = 'underline';
+							}
+						
 						})
 						button.addEventListener('mouseleave', function(e){
-							button.style.backgroundColor = backcolor;
+							if(onmouseanimation.includes('coloring')){
+								button.style.backgroundColor = backcolor;
+							}else if (onmouseanimation === 'highlighting'){
+								button.style.textDecoration = 'none';
+							}
 						})
 					}
+			
+
 					if(i === 0){
-						const top = topcenter-this._self.diameter
+						const top = topcenter-this._self.diameter;
 						button.id = 'b0';
 						button.style = `left:${leftcenter}px;top: ${top}px;position:fixed; 
 						border-radius:20px; background-color: ${backcolor};transition: all 0.5s ease-in-out;`
 					}
 					else if (i ===1){
-						const top = topcenter+this._self.diameter
+						const top = topcenter+this._self.diameter ;
 						button.id = 'b1'
-						button.style = `position:fixed;left:${leftcenter}px ;top: ${top}px;border-radius:20px;
+						button.style = `position:fixed;left:${leftcenter }px ;top: ${top}px;border-radius:20px;
 						background-color: ${backcolor};transition: all 0.5s ease-in-out;`
 					}
 					else if (i === 2 ){
-						const left = leftcenter - this._self.diameter;
+						const left = leftcenter - this._self.diameter ;
 						button.id = 'b2'
 						button.style = `position:fixed;left:${left}px; ;top: ${topcenter}px ;border-radius:20px;
 						background-color: ${backcolor};transition: all 0.5s ease-in-out;`
 					}else if(i ===3){
-						const left = leftcenter + this._self.diameter;
+						const left = leftcenter + this._self.diameter ;
 						button.id = 'b3'
 						button.style = `position:fixed;left:${left}px;top: ${topcenter}px;border-radius:20px;
 						background-color: ${backcolor}; transition: all 0.5s ease-in-out; `
@@ -364,20 +388,22 @@ const log = console.log;
 				this._self.body.append(this._self.holdnavigation);
 
 				head.addEventListener('mouseenter', function(e){
-					const leftcenter = parseFloat(this._self.head.style.left, 10) + this._self.diameter/2 -20;
+					const leftcenter = parseFloat(this._self.head.style.left, 10) + this._self.diameter/2 -15;
 					const topcenter = parseFloat(this._self.head.style.top, 10) + this._self.diameter/2 -10; 
+
 					for (let i = 0; i< selectedlink.length ; i++ ){
 						const ids = document.getElementById('b' + i);
+						const numofletter = selectedlink[i].length;
 						if ( i === 0){
 							const top = topcenter-this._self.diameter
-							ids.style.left = leftcenter + 'px';
+							ids.style.left = (leftcenter - numofletter - 4)+ 'px';
 							ids.style.top = top + 'px';
 						}else if(i === 1){
 							const top = topcenter+this._self.diameter
-							ids.style.left = leftcenter + 'px';
+							ids.style.left = (leftcenter- numofletter- 4) + 'px';
 							ids.style.top = top + 'px';
 						}else if(i === 2){
-							const left = leftcenter -this._self.diameter;
+							const left = leftcenter -numofletter*2 - 4  -this._self.diameter;
 							ids.style.left = left + 'px';
 							ids.style.top = topcenter + 'px'; 
 						}else if (i === 3){
