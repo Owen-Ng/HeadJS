@@ -5,6 +5,7 @@ body{
 #headerwork{
 	text-align: center;
 	margin-top: 100px;
+	font-family: cursive;
 	/*padding-top: 10%;
 	padding-bottom: 10%;*/
 }
@@ -12,13 +13,37 @@ body{
 /*	position: relative;
 	top: 50%;
 	left: 40%;*/
-	width: 200px;
+	width: 202px;
+	height: 202px;
 	border-radius: 50%;
+
+
+}
+#tryme{
+	display: block;
+	position: fixed;
+	border-style: solid;
+	border-color: black;
+	top: 147px;
+	left: 897px;
+	width: 202px;
+	height: 202px;
+	z-index: 8;
+	border-radius: 50%;
+}
+#tryme h1{
+	display: block;
+	position: fixed;
+	top: 320px;
+	left: 1070px;
+	transform: rotate(-45deg);
 }
 #section{
 	align-content: center;
 	text-align: center;
 	margin-left: -40px;
+	
+	font-family: cursive;
 
 
 }
@@ -56,8 +81,9 @@ body{
 	text-decoration: none;
 	background-size: auto;
 	padding: 10px;
-	
+
 	width: 100px;
+	height: 100%;
 
 }
 #section ul li{

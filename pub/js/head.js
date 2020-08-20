@@ -2,15 +2,31 @@
 const log = console.log;
 
 (function(global){
-
-	function Head(startcoord,diameter, backimg,backimgsize, draggable, animation){
+	/**
+	* Initialize the js object library. Creating a widget with functionalities
+	* that you intend to make. 
+	* @param {Array of Numbers of size 2} startcoor - initialize where you want the widget to start
+	* @param {Number} diameter - The size of the widget
+	* @param {String} backimg - The path of the image
+	* @param {Number} backimgsize - The size of the backimg
+	* @param {Boolean} draggable - Do you want the widget to be draggable?
+	* @param {String} animation:
+	*What animation do you want?
+	* "Duplicating {Number}" When moved, there will be the backimg what will duplicate itself.
+	*						{Number}optional the higher the number the longer will be the animation.
+	* "Iconimg {String} {Number}" when moved, the {String} image path will be used to duplicate itself.
+	*						{Number}optional the higher the number the longer will be the animation.
+	* "Shadowing {String}" When moved and clicked, there will a shadow depending on how you implement it.
+	*					 For more reference on how to use Shadowing "https://www.w3schools.com/cssref/css3_pr_box-shadow.asp"
+	*/
+	function Head(startcoord,diameter, backimg,backimgsize, draggable=false, animation){
 
 	this._self = {};
 	this._self.coord = startcoord;
 	this._self.diameter = diameter;
 	this._self.backimg = backimg;
 	this._self.draggable = draggable;
-	this._self.clickonoff = false;
+	this._self.clickonoff = null;
 	this._self.mousedown = false;
 	this._self.currentpage = null;
 	this._self.holdnavigation = null;
@@ -24,18 +40,19 @@ const log = console.log;
 
 	const dochead = document.querySelector('head');
 
-
+	if(this._self.backimg){
  	if (this._self.backimg.charAt(0) === "/"){
- 			style.innerHTML = `	#head {display:block;position: fixed;z-index:1;	 border-radius: 50%;
+ 			style.innerHTML = `	#head {display:block;position: fixed;z-index:10;	 border-radius: 50%;
  				padding:0px; margin:0px;background-image: url(${this._self.backimg}) ;background-size:${backimgsize}px;}
- 				#headclone {display:block;position: fixed;z-index:0;	 border-radius: 50%;
+ 				#headclone {display:block;position: fixed;z-index:9;	 border-radius: 50%;
  				padding:0px; margin:0px;background-image: url(${this._self.backimg});background-size:${backimgsize}px;}`
  	}else{
- 			style.innerHTML = `	#head {display:block;position: fixed;z-index:1;	 border-radius: 50%;
+ 			style.innerHTML = `	#head {display:block;position: fixed;z-index:10;	 border-radius: 50%;
  				padding:0px; margin:0px; background-color: ${this._self.backimg};background-size:${backimgsize}px;};
- 				#headclone {display:block;position: fixed;z-index:0;	 border-radius: 50%;
+ 				#headclone {display:block;position: fixed;z-index:9;	 border-radius: 50%;
  				padding:0px; margin:0px; background-color: ${this._self.backimg};background-size:${backimgsize}px;};`
  	}
+ }
 	dochead.append(style);
 	head.className = 'customhead'
 	head.id = 'head';
@@ -43,7 +60,7 @@ const log = console.log;
 	head.style = `top: ${this._self.coord[0]}px;left: ${this._self.coord[1]}px;width: ${this._self.diameter}px; height: ${this._self.diameter}px;`
 	
 	//Animation method dupplicating
-	function duplicating(body){
+	function duplicating(body, img){
 		const head1 = document.querySelector('#head');
 		const headclone = head1.cloneNode(true);
 		headclone.id = 'headclone'
@@ -54,7 +71,7 @@ const log = console.log;
 			const node = document.getElementById("headclone")
 			
 			node.parentNode.removeChild(node);
-		},70)
+		},img[1]? img[1]: 70)
 	}
 	//animation methid icon image
 	function iconimg(body, img){
@@ -64,6 +81,7 @@ const log = console.log;
 		
 		headclone.style.backgroundImage = `url(${img[1]})`
 		headclone.style.backgroundSize = img[2] + 'px';
+		const trantime = (img[3]) ? (img[3]) : 70;
 		body.append(headclone);
 
 		setTimeout(function(){
@@ -71,15 +89,15 @@ const log = console.log;
 			const node = document.getElementById("headclone")
 			
 			node.parentNode.removeChild(node);
-		},70)
+		},trantime)
 	}
 	//Start dragging the element
 	function ondrag(event){
-
+		event.stopPropagation()
 			if ( this._self.clickonoff){
 				event.preventDefault();
 			}else{
-			
+				// this._self.clickonoff = false;
 				this._self.dragging ={
 				element: event.target,
 				speed: { x: 0, y: 0 },
@@ -92,7 +110,6 @@ const log = console.log;
 	}
 	//Method When stop dragging the element
 	function dragdrop(){
-		
 		if (!this._self.dragging){return;}
 
 		
@@ -119,6 +136,7 @@ const log = console.log;
  		else if( this._self.animation.includes("shadowing")){
  			head.style.boxShadow = "";
  		}
+ 		//this._self.clickonoff = false;
   		this._self.dragging = null;
 
 	}
@@ -128,20 +146,22 @@ const log = console.log;
 		e.stopPropagation()
 		
 		if (!this._self.dragging) { return; }
+
 			if(this._self.animation === undefined){
 
 			}
-			else if (this._self.animation === "duplicating"){
-				duplicating(body)
+			else if (this._self.animation.includes("duplicating")){
+				duplicating(body, this._self.animation.split(" "))
 			}
 			else if (this._self.animation.includes("iconimg")){
 				iconimg(body, this._self.animation.split(" "));
 			}else if( this._self.animation.includes("shadowing")){
 				head.style.boxShadow = this._self.animation.split(" ").slice(1).join(' ');
 			}
+			if (this._self.clickonoff !== null){
+				this._self.clickonoff = true;
+			}
 			
-		
-			this._self.clickonoff = true;
 			if (this._self.holdnavigation !== null){
 				this._self.holdnavigation.style.display = 'none';
 			}
@@ -179,6 +199,11 @@ const log = console.log;
 	}
 	Head.prototype ={
 		//Method to implement double click navigation between different screens set by the user
+		/**
+		Double click will navigate to the next page set by the user.
+		@param {Array} consisting of String. The string are the html name. 
+		Make sure all html pages are on the same folder 
+		*/
 		addoubleclick: function(link){
 			this._self.head.addEventListener('dblclick', function(e){
 			const select = window.location.href.replace(( window.location.origin + '/') , '');
@@ -203,7 +228,23 @@ const log = console.log;
 		
 		},
 		//Method to implement a click event that will display a list when clicked
-		addclicklist: function(listarray, W, L, backgroundcolor, onmouseanimation){
+		/**
+		A list will appear when clicked. The list will adjust itself depending on the length and width provided.
+		If an Shadowing was added as animation in the initialize object of Head(), The shadow will show up around 
+		the widget when clicked.
+		@param {Objects of Array} listarray - Provide which html pages should have a specific list. If you just want 
+		to display a message, you can have just a simple string as the element. e.g 'anything do not start with 'link' If you want to navigate between other screens,
+		start the string with a link, then the html file and then the name of the element. e.g 'link Screen.html page 1'
+		e.g {'Screen.html':['hello', 'link Screen1.html page1'], 'Screen1.html': ['Yes','link Screen page' ]} 
+		@param {Number} W - width of the list 
+		@param {Number} L - length of the list
+		@param {String} backgroundcolor - The color of the list. You can use HEX color
+		@param {String} onmouse animation - Choose between 'highlighting' and 'coloring'. For coloring, 'coloring {String}'
+		The {String} is the color you choose can either be a color of an hex code.
+		@param {Number} animationtime - The time it takes in millisecond for the animation trnasition. Default 1000
+		*/
+		addclicklist: function(listarray, W, L, backgroundcolor, onmouseanimation, animationtime =1000){
+			this._self.clickonoff = false;
 			const ulist = document.createElement('ul');
 			const selected = window.location.href.replace(( window.location.origin + '/') , '');
 			const linkText = listarray[selected];
@@ -213,12 +254,13 @@ const log = console.log;
 					const list = document.createElement('li');
 					const link = document.createElement('a');
 					link.href = element.split(' ')[1];
-					link.style = `text-decoration: none; color:black`
+
+					link.style = `display: block;text-decoration: none; color:black;background-size:auto; width:100%;height:100%;`
 					// _self.linklist.push(link.href);
 					link.innerHTML = element.split(' ').slice(2).join(' ');
 					list.draggable = 'false';
-					list.style = `width: ${W}px; height: ${L}px; border: 1px solid black;
-					 margin: 2px; text-align: center; border-radius:20px;transition: all 1s ease-in-out;background-color: ${backgroundcolor} `
+					list.style = ` border: 1px solid black; width: ${W}px; height: ${L}px; 
+					 margin: 2px; text-align: center; border-radius:20px;transition: all ${animationtime}ms ease-in-out;background-color: ${backgroundcolor} `
 					list.append(link);
 					list.className = 'l'+ i;
 					if (onmouseanimation){
@@ -266,7 +308,11 @@ const log = console.log;
 			this._self.head.addEventListener('click', function(e){
 				e.preventDefault();
 				e.stopPropagation();
-				this._self.clickonoff = !this._self.clickonoff;
+				
+				
+				
+					this._self.clickonoff = !this._self.clickonoff;
+				
 				setTimeout(function(){
 				if (this._self.clickonoff ){
 					if (this._self.holdnavigation !== null){
@@ -321,8 +367,48 @@ const log = console.log;
 		
 			this._self.body.append(ulist);
 		},
+		/*
+		A seperate functiion to animate text outside of the widget given an id and animation type.
+		@param {String} id -  The id of the element you want to animate.
+		@param {String} animation - Type of animation 'coloring' and 'highlighting'. For coloring, 'coloring {String}' the {String}
+		is the color can be an HEX code or a color name
+		*/
+		addanimationbyid: function(id, animation){
+			const element = document.getElementById(id);
+			if (animation){
+				element.style.transition = 'all 1s ease-in-out';
+			element.addEventListener('mouseenter',function(e){
+					if(animation.includes('coloring')){
+						element.style.backgroundColor = animation.split(' ')[2];
+					}else if (animation === 'highlighting'){
+						element.style.textDecoration = 'underline';
+					}
+				
+				})
+				element.addEventListener('mouseleave', function(e){
+					if(animation.includes('coloring')){
+						element.style.backgroundColor =animation.split(' ')[1];
+					}else if (animation === 'highlighting'){
+						element.style.textDecoration = 'none';
+					}
+				})
+			}
+		},
 	//method added on mouse listener to display buttons that will navigate between screens
-	addtouchhold: function(listarray, backcolor, onmouseanimation){
+	/*
+	Mininmum of 1 and a maximum of 4 buttons can be created. When your mouse is on hold on the widget, 
+	The buttons that is been listen will show up. This method is used to navigate within the page.
+	@param {Object of array} listarray -  The objects are the html pages and the list are the link to those button.
+	e.g {'Screen1': ['top', 'bottom'], 'Screen4.html': ['top',  'bottom','left', 'right']}
+	@param {String} backcolor -the background color.
+	@param {Number} width - width of the button.
+	@param {Number} height - height of the button.
+	@param {String} onmouseanimation -  Type of animation 'coloring' and 'highlighting'. For coloring, 'coloring {String}' the {String}
+	is the color can be an HEX code or a color name
+	@param {Number} mouseleavetime - The time in millisecond for the button to disappear. Default 1000.
+	@param {Number} transtime - The time it took for the button animation. Default 500.
+	*/
+	addtouchhold: function(listarray, backcolor,width, height, onmouseanimation, mouseleavetime =1000, transtime = 500){
 		const leftcenter = parseFloat(this._self.head.style.left, 10) + this._self.diameter/2 ;
 		const topcenter = parseFloat(this._self.head.style.top, 10) + this._self.diameter/2 ;
 		const selected = window.location.href.replace(( window.location.origin + '/') , '');
@@ -335,7 +421,7 @@ const log = console.log;
 					const abutton = document.createElement('a');
 					abutton.href = `#${selectedlink[i]}`;
 					abutton.innerHTML = selectedlink[i];
-					abutton.style = `text-decoration: none; color: black; `
+					abutton.style = `display: block; width: 100%; height:100%;text-decoration: none; color: black; `
 					// button.innerHTML = selectedlink[i];
 					button.append(abutton);
 					button.className = 'b' + i;
@@ -361,25 +447,25 @@ const log = console.log;
 					if(i === 0){
 						const top = topcenter-this._self.diameter;
 						button.id = 'b0';
-						button.style = `left:${leftcenter}px;top: ${top}px;position:fixed; 
-						border-radius:20px; background-color: ${backcolor};transition: all 0.5s ease-in-out;`
+						button.style = `left:${leftcenter}px;top: ${top}px;position:fixed; width: ${width}px;height: ${height}px;
+						border-radius:20px; background-color: ${backcolor};transition: all ${transtime}ms ease-in-out;`
 					}
 					else if (i ===1){
 						const top = topcenter+this._self.diameter ;
 						button.id = 'b1'
-						button.style = `position:fixed;left:${leftcenter }px ;top: ${top}px;border-radius:20px;
-						background-color: ${backcolor};transition: all 0.5s ease-in-out;`
+						button.style = `position:fixed;left:${leftcenter }px ;top: ${top}px;border-radius:20px;width: ${width}px;height: ${height}px;
+						background-color: ${backcolor};transition: all ${transtime}ms ease-in-out;`
 					}
 					else if (i === 2 ){
 						const left = leftcenter - this._self.diameter ;
 						button.id = 'b2'
-						button.style = `position:fixed;left:${left}px; ;top: ${topcenter}px ;border-radius:20px;
-						background-color: ${backcolor};transition: all 0.5s ease-in-out;`
+						button.style = `position:fixed;left:${left}px; ;top: ${topcenter}px ;border-radius:20px;width: ${width}px;height: ${height}px;
+						background-color: ${backcolor};transition: all ${transtime}ms ease-in-out;`
 					}else if(i ===3){
 						const left = leftcenter + this._self.diameter ;
 						button.id = 'b3'
-						button.style = `position:fixed;left:${left}px;top: ${topcenter}px;border-radius:20px;
-						background-color: ${backcolor}; transition: all 0.5s ease-in-out; `
+						button.style = `position:fixed;left:${left}px;top: ${topcenter}px;border-radius:20px;width: ${width}px;height: ${height}px;
+						background-color: ${backcolor}; transition: all ${transtime}ms ease-in-out; `
 					}
 					this._self.holdnavigation.append(button);
 					this._self.holdnavigation.style = 'display:none;'
@@ -396,14 +482,14 @@ const log = console.log;
 						const numofletter = selectedlink[i].length;
 						if ( i === 0){
 							const top = topcenter-this._self.diameter
-							ids.style.left = (leftcenter - numofletter - 4)+ 'px';
+							ids.style.left = (leftcenter - numofletter - 4 - width/4)+ 'px';
 							ids.style.top = top + 'px';
 						}else if(i === 1){
 							const top = topcenter+this._self.diameter
-							ids.style.left = (leftcenter- numofletter- 4) + 'px';
+							ids.style.left = (leftcenter- numofletter- 4 - width/4) + 'px';
 							ids.style.top = top + 'px';
 						}else if(i === 2){
-							const left = leftcenter -numofletter*2 - 4  -this._self.diameter;
+							const left = leftcenter -numofletter*2 - 4 - width/2 -this._self.diameter;
 							ids.style.left = left + 'px';
 							ids.style.top = topcenter + 'px'; 
 						}else if (i === 3){
@@ -439,7 +525,7 @@ const log = console.log;
 					setTimeout(function(){
 					this._self.mousedown= false;
 					this._self.holdnavigation.style.display = 'none'
-					}.bind(this), 1000)
+					}.bind(this), mouseleavetime)
 					
 				}.bind(this))
 		} //Solely to prevent from looking for something that does not exist
