@@ -1,0 +1,43 @@
+body{
+	background-color:#f0f8ff;
+	font-family: cursive;
+}
+.navbar{
+	position: fixed;
+	 top: 0; /* Position the navbar at the top of the page */
+  width: 100%;
+  background-color: #0F83A9 !important;
+  color: black !important;
+}
+.nav-item{
+	border-radius: 10px;
+	margin-left: 10px;
+}
+table{
+	 margin:50px;
+}
+pre{	
+	background-color:#96C9D9;
+	padding: 10px;
+	width: 75%;
+	border-radius: 20px;
+	margin-left: 100px;
+}
+
+td {
+
+	
+	padding-bottom: 10px;
+
+	min-width: 200px;
+
+
+}
+.center{
+	padding-top: 40px;
+	margin: 20px;
+	padding-left: 20px;s
+}
+h2{
+	padding-left: 40px;
+}

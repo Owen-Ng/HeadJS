@@ -54,7 +54,6 @@ const log = console.log;
  	}
  }
 	dochead.append(style);
-	head.className = 'customhead'
 	head.id = 'head';
 
 	head.style = `top: ${this._self.coord[0]}px;left: ${this._self.coord[1]}px;width: ${this._self.diameter}px; height: ${this._self.diameter}px;`
@@ -239,7 +238,7 @@ const log = console.log;
 		@param {Number} W - width of the list 
 		@param {Number} L - length of the list
 		@param {String} backgroundcolor - The color of the list. You can use HEX color
-		@param {String} onmouse animation - Choose between 'highlighting' and 'coloring'. For coloring, 'coloring {String}'
+		@param {String} onmouseanimation - Choose between 'highlighting' and 'coloring'. For coloring, 'coloring {String}'
 		The {String} is the color you choose can either be a color of an hex code.
 		@param {Number} animationtime - The time it takes in millisecond for the animation trnasition. Default 1000
 		*/
@@ -372,11 +371,12 @@ const log = console.log;
 		@param {String} id -  The id of the element you want to animate.
 		@param {String} animation - Type of animation 'coloring' and 'highlighting'. For coloring, 'coloring {String}' the {String}
 		is the color can be an HEX code or a color name
+		@param {Number} transitiontime - The transition time for the animation.
 		*/
-		addanimationbyid: function(id, animation){
+		addanimationbyid: function(id, animation, transitiontime=1000){
 			const element = document.getElementById(id);
 			if (animation){
-				element.style.transition = 'all 1s ease-in-out';
+				element.style.transition = `all ${transitiontime}ms ease-in-out`;
 			element.addEventListener('mouseenter',function(e){
 					if(animation.includes('coloring')){
 						element.style.backgroundColor = animation.split(' ')[2];
@@ -424,7 +424,6 @@ const log = console.log;
 					abutton.style = `display: block; width: 100%; height:100%;text-decoration: none; color: black; `
 					// button.innerHTML = selectedlink[i];
 					button.append(abutton);
-					button.className = 'b' + i;
 					if (onmouseanimation){
 						button.addEventListener('mouseenter',function(e){
 							if(onmouseanimation.includes('coloring')){
