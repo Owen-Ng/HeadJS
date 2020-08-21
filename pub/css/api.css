@@ -2,6 +2,15 @@ body{
 	background-color:#f0f8ff;
 	font-family: cursive;
 }
+html {
+  scroll-behavior: smooth;
+}
+#b2{
+	margin-left: -70px !important;
+}
+#b1{
+	margin-left: -12px !important;
+}
 code{
 	background-color: #96C9D9 !important;
 }

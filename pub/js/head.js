@@ -1,6 +1,11 @@
 "use strict"
 const log = console.log;
-
+/*
+* Resource used: https://www.w3schools.com/ - General JavaScript reference
+* https://www.w3schools.com/jsref/obj_mouseevent.asp - Mouse Events. 
+* https://gomakethings.com/how-to-use-requestanimationframe-with-vanilla-js/ - For smoother effects.
+* https://www.w3schools.com/jsref/met_node_clonenode.asp - For cloning 
+*/
 (function(global){
 	/**
 	* Initialize the js object library. Creating a widget with functionalities
@@ -100,7 +105,7 @@ const log = console.log;
 				this._self.dragging ={
 				element: event.target,
 				speed: { x: 0, y: 0 },
-				oldPos: { x: event.offsetX, y: event.offsetY },
+				oldposition: { x: event.offsetX, y: event.offsetY },
 	    		offset: { x: event.offsetX, y: event.offsetY },
 	    		
 	    		
@@ -111,25 +116,23 @@ const log = console.log;
 	function dragdrop(){
 		if (!this._self.dragging){return;}
 
-		
-
 		const _dragging = this._self.dragging;
 		if (_dragging.speed.x !== 0 && _dragging.speed.y !== 0){
-		const updatePos = () => {
-			const pos ={
-				x: _dragging.oldPos.x + _dragging.speed.x,
-				y: _dragging.oldPos.y + _dragging.speed.y
+		const updateposition = () => {
+			const position ={
+				x: _dragging.oldposition.x + _dragging.speed.x,
+				y: _dragging.oldposition.y + _dragging.speed.y
 			};
 		
 		_dragging.speed.x *= 0.9;
       	_dragging.speed.y *= 0.9;
-      	_dragging.oldPos = pos;
-      	applyPos(_dragging.element, pos);
+      	_dragging.oldposition = position;
+      	applychange(_dragging.element, position);
       	if (Math.abs(Math.max(_dragging.speed.x, _dragging.speed.y)) > 0.1) {
-      		requestAnimationFrame(updatePos);
+      		requestAnimationFrame(updateposition);
       	}
     	}
-    	requestAnimationFrame(updatePos);
+    	requestAnimationFrame(updateposition);
  		}
  		if (this._self.animation === undefined){}
  		else if( this._self.animation.includes("shadowing")){
@@ -165,20 +168,20 @@ const log = console.log;
 				this._self.holdnavigation.style.display = 'none';
 			}
 			
-		  	const pos = {
+		  	const position = {
 		  	x: e.clientX - this._self.dragging.offset.x,
 		    y: e.clientY - this._self.dragging.offset.y,
 		  	};
-		  	this._self.dragging.speed.x = pos.x - this._self.dragging.oldPos.x;
-		  	this._self.dragging.speed.y = pos.y - this._self.dragging.oldPos.y;
-		  	this._self.dragging.oldPos = pos;
-		  	applyPos(this._self.dragging.element, pos);
+		  	this._self.dragging.speed.x = position.x - this._self.dragging.oldposition.x;
+		  	this._self.dragging.speed.y = position.y - this._self.dragging.oldposition.y;
+		  	this._self.dragging.oldposition = position;
+		  	applychange(this._self.dragging.element, position);
 		  
 		}
 		//Apply change to the position
-	function applyPos(element, pos) {
-		element.style.top = `${Math.max(0, Math.min(pos.y.toFixed(3), window.innerHeight - parseFloat(element.style.height)))}px`;
-		element.style.left = `${Math.max(0, Math.min(pos.x.toFixed(3), window.innerWidth - parseFloat(element.style.height)))}px`;
+	function applychange(element, position) {
+		element.style.top = `${Math.max(0, Math.min(position.y, window.innerHeight - parseFloat(element.style.height)))}px`;
+		element.style.left = `${Math.max(0, Math.min(position.x, window.innerWidth - parseFloat(element.style.height)))}px`;
 	}
 
 	//Checking if dragging is allowed
@@ -331,20 +334,18 @@ const log = console.log;
 					let defaultcorner = listcorners[3];
 					if ((listcorners[3][0] < window.innerWidth - W) && (listcorners[3][1] < window.innerHeight - L*linkText.length)){
 						//down right
-						log((listcorners[3][1] < screen.height - L))
-						log(listcorners[3][1])
-						log('dr')
+						
 					}else if ((listcorners[0][0] > W) && (listcorners[0][1] > L)){
 						//top left
-						log('tl')
+						
 						defaultcorner = listcorners[0]
 					}else if ((listcorners[1][0] > W) && (listcorners[1][1] < window.innerHeight- L)){
 						//down left
-						log('dl')
+						
 						defaultcorner = listcorners[1]
 					}else if((listcorners[2][0] < window.innerWidth- W) && (listcorners[2][1] > L)){
 						//top right 
-						log('tr')
+						
 						defaultcorner = listcorners[2]
 					}
 
@@ -477,7 +478,7 @@ const log = console.log;
 				this._self.body.append(this._self.holdnavigation);
 
 				head.addEventListener('mouseenter', function(e){
-					const leftcenter = parseFloat(this._self.head.style.left, 10) + this._self.diameter/2 -15;
+					const leftcenter = parseFloat(this._self.head.style.left, 10) + this._self.diameter/2 -20;
 					const topcenter = parseFloat(this._self.head.style.top, 10) + this._self.diameter/2 -10; 
 
 					for (let i = 0; i< selectedlink.length ; i++ ){
@@ -520,7 +521,7 @@ const log = console.log;
 							this._self.holdnavigation.style.display = 'block';
 
 						}
-					}.bind(this),1100)
+					}.bind(this),900)
 
 				}.bind(this))
 				head.addEventListener('mouseleave', function(e){

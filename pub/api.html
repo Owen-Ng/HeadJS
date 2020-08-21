@@ -40,7 +40,7 @@
 		</nav>
 		<div class="center">
 			<br>
-			<h1>Head.js<br><br></h1>
+			<h1 >Head.js<br><br></h1>
 			<h3>The main purpose of Head is to provide a more unique and fun way of displaying
 informations and navigate between different screens.</h3>
 		</div>
@@ -49,7 +49,7 @@ informations and navigate between different screens.</h3>
 			<h3>Step 1.<br><br>You will need to click on "Download"(Top right). <br><br>Step2.<br><br>
 				Then place it somewhere where it will be easily
 			accessible for your html files. You will need 3 files, the downloaded files, a js file to
-			manipulate the js file and your html file. <br><br>Step3.<br><br>The following will be enough to get you started </h3>
+			manipulate the jslibrary and your html file. <br><br>Step3.<br><br>The following will be enough to get you started </h3>
 			<h3><br>main.js (manipulate the library):</h3>
 			</div>
 			<pre>
@@ -66,16 +66,20 @@ informations and navigate between different screens.</h3>
 	}
 
 	examples();
+	//The path "/image/jslogo.JPG" may not be exactly the same as yours. The path depends on where you placed the file so 
+	//treat it as a regular file path
 	//This example is from the landing page
 				</code>
 			</pre>
-			<h3 class="center">html file:</h3>
+			<h3 class="center">html file (Make sure that the jsfile that will manipulate the head.js run after the library. Like the following):</h3>
 			<pre>
 				<code>
 		&#60;head&#62;
 		&#60;script defer type="text/javascript" src='/js/head.js'&#62;&#60;/script&#62;
 		&#60;script defer type="text/javascript" src='/js/api.js'&#62;&#60;/script&#62;
 		&#60;/head&#62;
+		//The path "/js/head.js"or "/js/api.js"  may not be exactly the same as yours. The path depends on 
+		//where you placed the file so treat it as a regular file path
 		//head.js - is the library
 		//api.js - is the one that manipulate the library. 
 				</code>
@@ -84,7 +88,7 @@ informations and navigate between different screens.</h3>
 		</div>
 
 		<div class="center">
-		<h3>Head(startcoord, diameter, backimg, backimgsize, draggable, animation)</h3>
+		<h3 id= "Head">Head(startcoord, diameter, backimg, backimgsize, draggable, animation)</h3>
 		<div> Initialize the js object library. Creating a widget with functionalities that you intend to make. </div>
 		<h2><br>Options</h2>
 		</div>
@@ -116,13 +120,13 @@ informations and navigate between different screens.</h3>
 					<td>backimg</td>
 					<td>/ </td>
 					<td>String</td>
-					<td> The size of the backimg</td>
+					<td> It is the file path of the background image. </td>
 				</tr>
 				<tr>
 					<td>backimgsize</td>
 					<td>/ </td>
 					<td>Number</td>
-					<td>initialize where you want the widget to start</td>
+					<td>The size of the backimg</td>
 				</tr>
 				<tr>
 					<td>draggable</td>
@@ -142,7 +146,7 @@ informations and navigate between different screens.</h3>
 							{Number}t (optional default at 70) the higher the number the longer will be the animation.
 							<br><br>
 	 "shadowing {String}" When moved and clicked, there will a shadow depending on how you implement it.
-						 For more reference on how to use Shadowing "https://www.w3schools.com/cssref/css3_pr_box-shadow.asp"</td>
+						 For more reference on how to use shadowing "https://www.w3schools.com/cssref/css3_pr_box-shadow.asp"</td>
 				</tr>
 			</tbody>
 		</table>
@@ -193,8 +197,8 @@ informations and navigate between different screens.</h3>
 			</tbody>
 		</table>
 		<div class="center">
-		<h3>addclicklist(listarray, W, L, backgroundcolor, onmouseanimation, animationtime)</h3>
-		<div>Method to implement a click event that will display a list when clicked. A list will appear when clicked. The list will adjust itself depending on the length and width provided.
+		<h3 id='addclicklist'>addclicklist(listarray, W, L, backgroundcolor, onmouseanimation, animationtime)</h3>
+		<div>Method to implement a click event that will display a list when clicked. The list will adjust itself depending on the length and width provided.
 		If an Shadowing was added as animation in the initialize object of Head(), The shadow will show up around 
 		the widget when clicked.</div>
 	</div>
@@ -247,7 +251,7 @@ informations and navigate between different screens.</h3>
 					<td> animationtime</td>
 					<td>1000</td>
 					<td>Number</td>
-					<td> The time it takes in millisecond for the animation trnasition. </td>
+					<td> The time it takes in millisecond for the animation transition. </td>
 				</tr>
 			
 				
@@ -261,19 +265,19 @@ informations and navigate between different screens.</h3>
 	 'link Screen2.html Screen2'],'Screen2.html':['Hello']},100,20, 'white', 'coloring orange');
 			</code>
 		</pre>
-			<h5 class="center">  For example, the above code point at 2 screen Screen1 and Screen 2. Each of them has a list of array
+			<h5 class="center">  For example, the above code point at 2 screen, Screen1 and Screen 2. Each of them has a list of array
 	    of either a link or a message. If you want to modify individually the appearance of each specific element of the list. You will have to create a css file like the following:</h5> 
 	    <pre>
 			<code>
 		#l0:{ 
 		//This one will make changes to the first element of the list.
 		//For example, 'Screen1.html' will be for 'Screen1' and 'Screen2.html' will be for 'Hello'
-			e.g, z-index: 10 !important;
+			//e.g, z-index: 10 !important;
 		}
 		#l1:{
 		//This one will make changes to the Second element of the list.
 		//For example, 'Screen1.html' will be for 'how are you' and 'Screen2.html' will be nothing 
-		because it contains only one element.
+		//because it contains only one element.
 		}
 		//Since you will be overwritting, the initial design you will have to add 
 				//!important after assigning a change in the appearance
@@ -282,7 +286,7 @@ informations and navigate between different screens.</h3>
 		
 		</pre>
 		<div class="center">
-		<h3>addanimationbyid(id, animation)</h3>
+		<h3 id='addanimationbyid'>addanimationbyid(id, animation)</h3>
 		<div>A seperate function method to animate text outside of the widget given an id and animation type.</div>
 				</div>
 				<table>
@@ -319,7 +323,7 @@ informations and navigate between different screens.</h3>
 			</tbody>
 		</table>
 			<div class="center">
-			<h3>addtouchhold(listarray, backcolor,width, height, onmouseanimation, mouseleavetime, transtime)</h3>
+			<h3 id = "addtouchhold">addtouchhold(listarray, backcolor,width, height, onmouseanimation, mouseleavetime, transtime)</h3>
 		<div>Method to display buttons that will navigate between screens. Mininmum of 1 and a maximum of 4 buttons can be created. When your mouse is on hold on the widget, 
 	The buttons that is been listed will show up. This method is used to navigate within the page.</div>
 </div>
@@ -337,7 +341,7 @@ informations and navigate between different screens.</h3>
 					<td>listarray </td>
 					<td>/ required</td>
 					<td>Object of array</td>
-					<td>The objects are the html pages and the list are the link to those button.
+					<td>The objects are the html pages and the list are the link to those buttons.
 	e.g {'Screen1': ['top', 'bottom'], 'Screen4.html': ['top',  'bottom','left', 'right']}</td>
 				</tr>
 
@@ -390,7 +394,7 @@ informations and navigate between different screens.</h3>
 		id respectively. Starting from b0 to b3</h5>
 		<pre>
 			<code>
-	 head.addtouchhold({'Screen3.html':['top', 'down', 'rightttt', 'lefttttttttttttt']},'','', 'white', 'coloring orange') 
+	 head.addtouchhold({'Screen3.html':['top', 'down', 'rightttt', 'lefttttttttttttt']},'','','white', 'coloring orange') 
 			</code>
 		</pre>
 			<h5 class="center">  For example, the above code point at  Screen3. It has a list of array
