@@ -1,17 +1,20 @@
 # Head.js
-![Project Image](pub/image/jslogo.JPG)
-The landingpage: (http://headjs.herokuapp.com/js/head.js) 
-##Getting Started 
 
-###Step 1.
+![Project Image](pub/image/jslogo.JPG = 100x)
+
+The landingpage: (http://headjs.herokuapp.com/js/head.js) 
+
+## Getting Started 
+
+### Step 1.
 
 You will need to click on "Download"(Top right). If on Github, click on (http://headjs.herokuapp.com/js/head.js).
 
-###Step 2.
+### Step 2.
 
 Then place it somewhere where it will be easily accessible for your html files. You will need 3 files, the downloaded files, a js file to manipulate the jslibrary and your html file.
 
-###Step 3.
+### Step 3.
 
 The following will be enough to get you started
 
@@ -31,6 +34,8 @@ main.js (manipulate the library):
 	}
 
 	examples();
+	//The path "/image/jslogo.JPG" may not be exactly the same as yours. The path depends on where you placed the file so 
+	//treat it as a regular file path
 	//This example is from the landing page
 ```
 html file: (Make sure that the jsfile that will manipulate the head.js run after the library). 
@@ -39,6 +44,8 @@ html file: (Make sure that the jsfile that will manipulate the head.js run after
 		<script defer type="text/javascript" src='/js/head.js'></script>
 		<script defer type="text/javascript" src='/js/api.js'></script>
 		</head>
+		//The path "/js/head.js"or "/js/api.js"  may not be exactly the same as yours. The path depends on 
+		//where you placed the file so treat it as a regular file path
 		//head.js - is the library
 		//api.js - is the one that manipulate the library. 
 ```
