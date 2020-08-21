@@ -325,8 +325,8 @@ const log = console.log;
 					
 					const left = parseFloat(this._self.head.style.left, 10);
 					const top = parseFloat(this._self.head.style.top, 10);
-					const listcorners = [[left  - W ,top  -this._self.diameter/2- L*linkText.length],[left - W, top + this._self.diameter],
-					[left + this._self.diameter , top - this._self.diameter/2 - L*linkText.length],[left + this._self.diameter, top+this._self.diameter - L]]
+					const listcorners = [[left  - W ,top  - L*linkText.length],[left - W, top + this._self.diameter],
+					[left + this._self.diameter , top - L*linkText.length],[left + this._self.diameter, top+this._self.diameter - L]]
 					//[top left], [down left],[]
 					let defaultcorner = listcorners[3];
 					if ((listcorners[3][0] < window.innerWidth - W) && (listcorners[3][1] < window.innerHeight - L*linkText.length)){
