@@ -2,6 +2,9 @@ body{
 	background-color:#f0f8ff;
 	font-family: cursive;
 }
+code{
+	background-color: #96C9D9 !important;
+}
 .navbar{
 	position: fixed;
 	 top: 0; /* Position the navbar at the top of the page */
@@ -11,10 +14,11 @@ body{
 }
 .nav-item{
 	border-radius: 10px;
-	margin-left: 10px;
+	margin-left: 0px;
 }
 table{
 	 margin:50px;
+	 margin-left: 90px;
 }
 pre{	
 	background-color:#96C9D9;
@@ -36,8 +40,7 @@ td {
 .center{
 	padding-top: 40px;
 	margin: 20px;
-	padding-left: 20px;s
-}
-h2{
-	padding-left: 40px;
+	padding-left: 20px;
+	margin-left: 70px;
+	margin-right: 60px;
 }

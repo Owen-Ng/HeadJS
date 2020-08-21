@@ -382,6 +382,8 @@ const log = console.log;
 						element.style.backgroundColor = animation.split(' ')[2];
 					}else if (animation === 'highlighting'){
 						element.style.textDecoration = 'underline';
+					}else if (animation.includes('shadowing')){
+						element.style.boxShadow = animation.split(" ").slice(1).join(' ');
 					}
 				
 				})
@@ -390,6 +392,8 @@ const log = console.log;
 						element.style.backgroundColor =animation.split(' ')[1];
 					}else if (animation === 'highlighting'){
 						element.style.textDecoration = 'none';
+					}else if (animation.includes('shadowing')){
+						element.style.boxShadow = "";
 					}
 				})
 			}

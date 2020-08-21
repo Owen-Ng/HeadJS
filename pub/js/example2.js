@@ -14,6 +14,9 @@ function examples() {
 	head.addanimationbyid("anim3", "coloring red #0F83A9");
 	head.addanimationbyid("anim4", "coloring red grey");
 	head.addanimationbyid("anim5", "coloring red #0F83A9");
+
+		head.addanimationbyid("anim6", "shadowing 0px 0px 30px  #0F83A9",500);
+	head.addanimationbyid("anim7", "shadowing 0px 0px 30px  #0F83A9",500);
 }
 
 examples();
