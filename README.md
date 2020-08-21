@@ -1,6 +1,5 @@
 # Head.js
 
-![Project Image](pub/image/jslogo.JPG){:height="50%" width="50%"}
 
 The landingpage: (http://headjs.herokuapp.com/js/head.js) 
 
