@@ -1,9 +1,11 @@
 body{
 	background-color:#f0f8ff;
 	font-family: cursive;
+	height:100%;
 }
 html {
   scroll-behavior: smooth;
+  height:100%;
 }
 #b2{
 	margin-left: -70px !important;

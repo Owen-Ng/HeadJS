@@ -1,13 +1,13 @@
 # Head.js
 
 
-The landingpage: (http://headjs.herokuapp.com/js/head.js) 
+The landingpage: (https://headjs.herokuapp.com/landingpage.html) 
 
 ## Getting Started 
 
 ### Step 1.
 
-You will need to click on "Download"(Top right). If on Github, click on (http://headjs.herokuapp.com/js/head.js).
+You will need to click on "Download"(Top right). If on Github, click on (https://headjs.herokuapp.com/js/head.js).
 
 ### Step 2.
 
@@ -48,4 +48,4 @@ html file: (Make sure that the jsfile that will manipulate the head.js run after
 		//head.js - is the library
 		//api.js - is the one that manipulate the library. 
 ```
-For more information on how to use the library, please find the documentation at (http://headjs.herokuapp.com/api.html)
+For more information on how to use the library, please find the documentation at (https://headjs.herokuapp.com/api.html)

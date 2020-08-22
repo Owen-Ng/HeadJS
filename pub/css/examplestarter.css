@@ -1,8 +1,11 @@
 body{
 	background-color:#f0f8ff;
 	font-family: cursive;
+	height:100%;
 }
+
 html {
+	height:100%;
   scroll-behavior: smooth;
 }
 
@@ -56,8 +59,8 @@ code{
 }
 #sectionscreen{
 	position: fixed;
-	top: 600px;
-	left: 350px;
+	top: 90%;
+	left: 27%;
 }
 #section{
 	margin-top: 40px;
